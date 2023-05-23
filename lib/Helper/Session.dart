@@ -395,11 +395,11 @@ Future<void> saveUserDetail(
   String tax_number,
   String pan_number,
   String status,
-  String signature,
+  String signature, String registeration_no, String degreeName,
 ) async {
   final waitList = <Future<void>>[];
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  waitList.add(prefs.setString(Id, userId));
+  waitList.add(prefs.setString(UserId, userId));
   waitList.add(prefs.setString(Username, name));
   waitList.add(prefs.setString(Email, email));
   waitList.add(prefs.setString(Mobile, mobile));
@@ -417,6 +417,8 @@ Future<void> saveUserDetail(
   waitList.add(prefs.setString(taxNumber, tax_number));
   waitList.add(prefs.setString(panNumber, pan_number));
   waitList.add(prefs.setString(Signature, signature));
+  waitList.add(prefs.setString(RegistrationNo, registeration_no));
+  waitList.add(prefs.setString(DegreeName, degreeName));
   await Future.wait(waitList);
 }
 
@@ -470,8 +472,8 @@ Future<void> clearUserSession() async {
 
 setDoctorSnackbar(String msg, BuildContext context) {
   ScaffoldMessenger.of(context).showSnackBar(
-    new SnackBar(
-      content: new Text(
+     SnackBar(
+      content:  Text(
         msg,
         textAlign: TextAlign.center,
         style: TextStyle(color: primary),

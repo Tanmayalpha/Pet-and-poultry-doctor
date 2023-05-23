@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:eshopmultivendor/DoctorHomeScreen.dart';
+import 'package:eshopmultivendor/Screen/Doctor/DoctorHomeScreen.dart';
 import 'package:eshopmultivendor/Helper/Session.dart';
 import 'package:eshopmultivendor/Helper/String.dart';
 import 'package:eshopmultivendor/Helper/app_assets.dart';

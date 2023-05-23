@@ -1,10 +1,16 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
+import 'package:eshopmultivendor/Screen/Doctor/DoctorHomeScreen.dart';
 import 'package:eshopmultivendor/Helper/ApiBaseHelper.dart';
 import 'package:eshopmultivendor/Helper/AppBtn.dart';
 import 'package:eshopmultivendor/Helper/Color.dart';
 import 'package:eshopmultivendor/Helper/Session.dart';
 import 'package:eshopmultivendor/Helper/String.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
+
 
 class Profile extends StatefulWidget {
   @override
@@ -21,7 +27,7 @@ class StateProfile extends State<Profile> with TickerProviderStateMixin {
       email,
       mobile,
       address,
-      image,
+      profile,
       curPass,
       newPass,
       confPass,
@@ -29,17 +35,18 @@ class StateProfile extends State<Profile> with TickerProviderStateMixin {
       accNo,
       storename,
       storeurl,
-      storeDesc,
+      degreeName,
       accname,
       bankname,
       bankcode,
       latitutute,
       longitude,
-      taxname,
+      chequeImage,
       taxnumber,
-      pannumber,
+      registration,
       status,
-      storelogo;
+       userId ,
+      signature;
 
   bool _isLoading = false;
   GlobalKey<FormState> sellernameKey = GlobalKey<FormState>();
@@ -93,22 +100,22 @@ class StateProfile extends State<Profile> with TickerProviderStateMixin {
   void initState() {
     super.initState();
 
-    mobileC = new TextEditingController();
-    nameC = new TextEditingController();
-    emailC = new TextEditingController();
-    addressC = new TextEditingController();
-    storenameC = new TextEditingController();
-    storeurlC = new TextEditingController();
-    storeDescC = new TextEditingController();
-    accnameC = new TextEditingController();
-    accnumberC = new TextEditingController();
-    bankcodeC = new TextEditingController();
-    banknameC = new TextEditingController();
-    latitututeC = new TextEditingController();
-    longituteC = new TextEditingController();
-    taxnameC = new TextEditingController();
-    pannumberC = new TextEditingController();
-    taxnumberC = new TextEditingController();
+    mobileC =  TextEditingController();
+    nameC =  TextEditingController();
+    emailC =  TextEditingController();
+    addressC =  TextEditingController();
+    storenameC =  TextEditingController();
+    storeurlC =  TextEditingController();
+    storeDescC =  TextEditingController();
+    accnameC =  TextEditingController();
+    accnumberC =  TextEditingController();
+    bankcodeC =  TextEditingController();
+    banknameC =  TextEditingController();
+    latitututeC =  TextEditingController();
+    longituteC =  TextEditingController();
+    taxnameC =  TextEditingController();
+    pannumberC =  TextEditingController();
+    taxnumberC =  TextEditingController();
     getUserDetails();
 
     buttonController = new AnimationController(
@@ -162,44 +169,45 @@ class StateProfile extends State<Profile> with TickerProviderStateMixin {
 //================= User Details frome Shared Preferance =======================
 
   getUserDetails() async {
-    CUR_USERID = await getPrefrence(Id);
+    userId = await getPrefrence(UserId);
+    print("_______${userId}_______");
     mobile = await getPrefrence(Mobile);
     name = await getPrefrence(Username);
     email = await getPrefrence(Email);
     address = await getPrefrence(Address);
-    image = await getPrefrence(IMage);
-    CUR_USERID = await getPrefrence(Id);
-    mobile = await getPrefrence(Mobile);
+    profile = await getPrefrence(IMage);
+    //CUR_USERID = await getPrefrence(Id);
+    //mobile = await getPrefrence(Mobile);
     storename = await getPrefrence(IdCard);
     storeurl = await getPrefrence(DegreeFile);
-    storeDesc = await getPrefrence(Certificate);
+    degreeName = await getPrefrence(DegreeName);
     accNo = await getPrefrence(accountNumber);
     accname = await getPrefrence(accountName);
     bankcode = await getPrefrence(bankCode);
     bankname = await getPrefrence(bankName);
     latitutute = await getPrefrence(Latitude);
     longitude = await getPrefrence(Longitude);
-    taxname = await getPrefrence(Cheque);
+    chequeImage = await getPrefrence(Cheque);
     taxnumber = await getPrefrence(taxNumber);
-    pannumber = await getPrefrence(panNumber);
+    registration = await getPrefrence(RegistrationNo);
     status = await getPrefrence(STATUS);
-    storelogo = await getPrefrence(Signature);
+    signature = await getPrefrence(Signature);
     mobileC!.text = mobile ?? "";
     nameC!.text = name ?? "";
     emailC!.text = email ?? "";
     addressC!.text = address ?? "";
     storenameC!.text = storename ?? "";
     storeurlC!.text = storeurl ?? "";
-    storeDescC!.text = storeDesc ?? "";
+    storeDescC!.text = degreeName ?? "";
     accnameC!.text = accname ?? "";
     accnumberC!.text = accNo ?? "";
     bankcodeC!.text = bankcode ?? "";
     banknameC!.text = bankname ?? "";
     latitututeC!.text = latitutute ?? "";
     longituteC!.text = longitude ?? "";
-    taxnameC!.text = taxname ?? "";
+    taxnameC!.text = chequeImage ?? "";
     taxnumberC!.text = taxnumber ?? "";
-    pannumberC!.text = pannumber ?? "";
+    pannumberC!.text = registration ?? "";
     setState(() {});
   }
 
@@ -274,7 +282,7 @@ class StateProfile extends State<Profile> with TickerProviderStateMixin {
   Future<void> checkNetwork() async {
     _isNetworkAvail = await isNetworkAvailable();
     if (_isNetworkAvail) {
-     await buttonController!.reverse();
+    // await buttonController!.reverse();
       setUpdateUser();
     } else {
       Future.delayed(Duration(seconds: 2)).then(
@@ -294,7 +302,76 @@ class StateProfile extends State<Profile> with TickerProviderStateMixin {
 //========================= For Update Saller API  =============================
 
   Future<void> setUpdateUser() async {
-    var parameter = {
+
+
+    var request = http.MultipartRequest('POST', getDoctorUpdateProfile);
+    request.fields.addAll({
+      'user_id': userId ?? '',
+      'name': nameC?.text ?? '',
+      'email': emailC?.text ?? '',
+      'mobile': mobileC?.text ?? '',
+      //'specialist': 'Orthopedics',
+      //'degree': 'MBBS',
+      //'password': '12345678',
+     // 'confirm_password': '12345678',
+      'address': addressC?.text ?? '' ,
+      //'registeration_no': '',
+     // 'valid_registeration_date': '',
+      'account_number': accnumberC?.text ?? '',
+      'account_type': 'Saving',
+      'account_holder_name': nameC?.text ?? '',
+      'bank_name': banknameC?.text ?? "",
+      'ifsc_code': bankcodeC?.text ?? '',
+      //'branch_name': 'Siyaganj Regal Square',
+     // 'upi_id': 'awa@oksbi',
+     // 'fcm_id': 'khdfkshfhk',
+      //'latitude': latitututeC?.text ?? '1234',
+     // 'longitude': longituteC?.text ?? '1234',
+    });
+    //request.files.add(await http.MultipartFile.fromPath('degree_file', ''));
+    //request.files.add(await http.MultipartFile.fromPath('id_card_file', '/Users/shaifalibangar/Downloads/_Users_shaifalibangar_Desktop_garima_5index.html.png'));
+    if(registrationCard!=null)
+    {
+      request.files.add(await http.MultipartFile.fromPath(
+          'registeration_card_file', registrationCard?.path ?? ''));
+    }
+    //request.files.add(await http.MultipartFile.fromPath('certificate_file', '/Users/shaifalibangar/Downloads/1683816300822.jpg'));
+    if(signatureImage!=null) {
+      request.files.add(await http.MultipartFile.fromPath(
+          'signature', signatureImage?.path ?? '' ));
+    }
+    if(profileImage!=null) {
+      request.files.add(await http.MultipartFile.fromPath(
+          'profile_image', profileImage?.path ?? ''));
+    }
+    //request.files.add(await http.MultipartFile.fromPath('cancel_cheque', '/Users/shaifalibangar/Downloads/b387da3c9ff997cf47bd4836d7783b4e.jpg'));
+    request.headers.addAll(doctorHeader);
+
+    http.StreamedResponse response = await request.send();
+
+    print('${request.fields}');
+
+    if (response.statusCode == 200) {
+      var result = await response.stream.bytesToString();
+      await buttonController!.reverse();
+      var finalResult = jsonDecode(result);
+      if(!(finalResult["error"])){
+
+
+        Navigator.pop(context, true);
+        setSnackbar(finalResult["message"]);
+
+
+      }else{
+        setSnackbar(finalResult["message"]);
+      }
+
+      print("_______${result}_______");
+    }
+    else {
+      print(response.reasonPhrase);
+    }
+    /*var parameter = {
       Id: CUR_USERID,
       Name: name ?? "",
       Mobile: mobile ?? "",
@@ -331,7 +408,7 @@ class StateProfile extends State<Profile> with TickerProviderStateMixin {
       onError: (error) {
         setSnackbar(error.toString());
       },
-    );
+    );*/
   }
 
 //==============================================================================
@@ -398,28 +475,41 @@ class StateProfile extends State<Profile> with TickerProviderStateMixin {
 //=========================== profile Image ====================================
 
   getprofileImage() {
-    return Container(
-      padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 30.0),
-      child: CircleAvatar(
-        radius: 50,
-        backgroundColor: primary,
-        child: LOGO != ''
-            ? Container(
-                decoration: BoxDecoration(
-                    color: Colors.grey[200],
-                    borderRadius: BorderRadius.circular(100),
-                    border: Border.all(color: primary)),
-                child: CircleAvatar(
-                  backgroundImage: NetworkImage(LOGO),
-                  radius: 100,
-                ),
-              )
-            : Container(
-                decoration: BoxDecoration(
-                    color: Colors.grey[200],
-                    borderRadius: BorderRadius.circular(100),
-                    border: Border.all(color: primary)),
-                child: Icon(Icons.account_circle, size: 100)),
+    return InkWell(
+      onTap: (){
+        _getFromGallery('profile');
+      },
+      child: Container(
+        padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 30.0),
+        child: CircleAvatar(
+          radius: 50,
+          backgroundColor: primary,
+          child: profileImage == null ? LOGO != ''
+              ? Container(
+                  decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      borderRadius: BorderRadius.circular(100),
+                      border: Border.all(color: primary)),
+                  child: CircleAvatar(
+                    backgroundImage: NetworkImage(LOGO),
+                    radius: 100,
+                  ),
+                )
+              : Container(
+                  decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      borderRadius: BorderRadius.circular(100),
+                      border: Border.all(color: primary)),
+                  child: Icon(Icons.account_circle, size: 100)) : Container(
+              decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(100),
+                  border: Border.all(color: primary)),
+              child: CircleAvatar(
+                backgroundImage: FileImage(profileImage ?? File('')),radius: 100,
+
+              )),
+        ),
       ),
     );
   }
@@ -999,10 +1089,10 @@ class StateProfile extends State<Profile> with TickerProviderStateMixin {
               borderRadius: BorderRadius.all(Radius.circular(10.0))),
           child: Column(
             children: <Widget>[
-              setStoreName(),
-              getDivider(),
-              setStoreURL(),
-              getDivider(),
+             // setStoreName(),
+              //getDivider(),
+              //setStoreURL(),
+              //getDivider(),
               setDescription(),
             ],
           ),
@@ -1337,13 +1427,13 @@ class StateProfile extends State<Profile> with TickerProviderStateMixin {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  getTranslated(context, "Description")!,
+                  'Degree',
                   style: Theme.of(this.context).textTheme.caption!.copyWith(
                       color: lightBlack2, fontWeight: FontWeight.normal),
                 ),
-                storeDesc != "" && storeDesc != null
+                degreeName != "" && degreeName != null
                     ? Text(
-                        storeDesc!,
+                        degreeName!,
                         style: Theme.of(this.context)
                             .textTheme
                             .subtitle2!
@@ -1367,7 +1457,7 @@ class StateProfile extends State<Profile> with TickerProviderStateMixin {
             ),
           ),
           Spacer(),
-          IconButton(
+          /*IconButton(
             icon: Icon(
               Icons.edit,
               size: 20,
@@ -1456,7 +1546,7 @@ class StateProfile extends State<Profile> with TickerProviderStateMixin {
                             form.save();
                             setState(
                               () {
-                                storeDesc = storeDescC!.text;
+                                degreeName = storeDescC!.text;
                                 Navigator.pop(context);
                               },
                             );
@@ -1468,7 +1558,7 @@ class StateProfile extends State<Profile> with TickerProviderStateMixin {
                 },
               );
             },
-          )
+          )*/
         ],
       ),
     );
@@ -2140,11 +2230,11 @@ class StateProfile extends State<Profile> with TickerProviderStateMixin {
               getDivider(),
               setLongitude(),
               getDivider(),
-              setTaxName(),
+              setRegistrationCard(),
               getDivider(),
               setTaxNumber(),
               getDivider(),
-              setPanNumber(),
+              setSignature(),
             ],
           ),
         ),
@@ -2463,7 +2553,7 @@ class StateProfile extends State<Profile> with TickerProviderStateMixin {
 //==============================================================================
 //============================== Tax Name ======================================
 
-  setTaxName() {
+  setRegistrationCard() {
     return Padding(
       padding: EdgeInsets.all(15.0),
       child: Row(
@@ -2478,31 +2568,27 @@ class StateProfile extends State<Profile> with TickerProviderStateMixin {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  getTranslated(context, "TaxName")!,
+                  "Registration Card",
                   style: Theme.of(this.context).textTheme.caption!.copyWith(
                       color: lightBlack2, fontWeight: FontWeight.normal),
                 ),
-                taxname != "" && taxname != null
-                    ? Text(
-                        taxname!,
-                        style: Theme.of(this.context)
-                            .textTheme
-                            .subtitle2!
-                            .copyWith(
-                              color: lightBlack,
-                              fontWeight: FontWeight.bold,
-                            ),
-                      )
-                    : Text(
-                        getTranslated(context, "NotAdded")!,
-                        style: Theme.of(this.context)
-                            .textTheme
-                            .subtitle2!
-                            .copyWith(
-                              color: lightBlack,
-                              fontWeight: FontWeight.bold,
-                            ),
-                      ),
+                registrationCard == null
+                    ? Container(
+                  height: 50,
+                  width: 90,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    image: DecorationImage(
+                        image: NetworkImage(registration?? ''),
+                        fit: BoxFit.cover),),)
+                    : Container(
+                  height: 50,
+                  width: 90,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    image: DecorationImage(
+                        image: FileImage(registrationCard ?? File('')),
+                        fit: BoxFit.cover),),),
               ],
             ),
           ),
@@ -2514,7 +2600,9 @@ class StateProfile extends State<Profile> with TickerProviderStateMixin {
               color: lightBlack,
             ),
             onPressed: () {
-              showDialog(
+
+              _getFromGallery('registration');
+             /* showDialog(
                 context: context,
                 barrierDismissible: false,
                 builder: (BuildContext context) {
@@ -2596,7 +2684,7 @@ class StateProfile extends State<Profile> with TickerProviderStateMixin {
                             form.save();
                             setState(
                               () {
-                                taxname = taxnameC!.text;
+                                chequeImage = taxnameC!.text;
                                 Navigator.pop(context);
                               },
                             );
@@ -2606,7 +2694,7 @@ class StateProfile extends State<Profile> with TickerProviderStateMixin {
                     ],
                   );
                 },
-              );
+              );*/
             },
           )
         ],
@@ -2771,7 +2859,7 @@ class StateProfile extends State<Profile> with TickerProviderStateMixin {
 //==============================================================================
 //============================ Pan Number ======================================
 
-  setPanNumber() {
+  setSignature() {
     return Padding(
       padding: EdgeInsets.all(15.0),
       child: Row(
@@ -2786,31 +2874,27 @@ class StateProfile extends State<Profile> with TickerProviderStateMixin {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  getTranslated(context, "PanNumber")!,
+                  "Signature",
                   style: Theme.of(this.context).textTheme.caption!.copyWith(
                       color: lightBlack2, fontWeight: FontWeight.normal),
                 ),
-                pannumber != "" && pannumber != null
-                    ? Text(
-                        pannumber!,
-                        style: Theme.of(this.context)
-                            .textTheme
-                            .subtitle2!
-                            .copyWith(
-                              color: lightBlack,
-                              fontWeight: FontWeight.bold,
-                            ),
-                      )
-                    : Text(
-                        getTranslated(context, "NotAdded")!,
-                        style: Theme.of(this.context)
-                            .textTheme
-                            .subtitle2!
-                            .copyWith(
-                              color: lightBlack,
-                              fontWeight: FontWeight.bold,
-                            ),
-                      ),
+                signatureImage == null
+                    ? Container(
+                  height: 50,
+                  width: 90,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    image: DecorationImage(
+                        image: NetworkImage(signature?? ''),
+                        fit: BoxFit.cover),),)
+                    : Container(
+                  height: 50,
+                  width: 90,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    image: DecorationImage(
+                        image: FileImage(signatureImage ?? File('')),
+                        fit: BoxFit.cover),),),
               ],
             ),
           ),
@@ -2822,7 +2906,9 @@ class StateProfile extends State<Profile> with TickerProviderStateMixin {
               color: lightBlack,
             ),
             onPressed: () {
-              showDialog(
+
+              _getFromGallery('signature');
+              /*showDialog(
                 context: context,
                 barrierDismissible: false,
                 builder: (BuildContext context) {
@@ -2914,12 +3000,39 @@ class StateProfile extends State<Profile> with TickerProviderStateMixin {
                     ],
                   );
                 },
-              );
+              );*/
             },
           )
         ],
       ),
     );
+  }
+
+  final ImagePicker _picker = ImagePicker();
+  var imagefssai;
+  var imagepan;
+  var imageadhar;
+  var gstFile;
+  var shopImage;
+
+  File? profileImage;
+  File? registrationCard;
+  File? signatureImage;
+
+  _getFromGallery(String type) async {
+    final XFile? pickedFile =
+    await _picker.pickImage(source: ImageSource.gallery, imageQuality: 100, maxHeight: 480, maxWidth: 480);
+    if (pickedFile != null) {
+      setState(() {
+        if(type == 'signature'){signatureImage = File(pickedFile.path);}
+        else if(type == 'registration'){registrationCard = File(pickedFile.path);}
+        //else if(type == 'profile'){imagepan = File(pickedFile.path);}
+        //else if(type == 'adhar'){imageadhar = File(pickedFile.path);}
+        else {profileImage = File(pickedFile.path);}
+
+      });
+      //Navigator.pop(context);
+    }
   }
 
 //==============================================================================
@@ -3286,16 +3399,16 @@ class StateProfile extends State<Profile> with TickerProviderStateMixin {
         Address: address ?? "",
         IdCard: storename ?? "",
         DegreeFile: storeurl ?? "",
-        Certificate: storeDesc ?? "",
+        Certificate: degreeName ?? "",
         accountNumber: accNo ?? "",
         accountName: accname ?? "",
         bankCode: bankcode ?? "",
         bankName: bankname ?? "",
         Latitude: latitutute ?? "",
         Longitude: longitude ?? "",
-        Cheque: taxname ?? "",
+        Cheque: chequeImage ?? "",
         taxNumber: taxnumber ?? "",
-        panNumber: pannumber ?? "",
+        panNumber: registration ?? "",
         STATUS: status ?? "1",
         OLDPASS: curPassC,
         NEWPASS: newPassC,

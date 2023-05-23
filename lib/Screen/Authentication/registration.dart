@@ -6,7 +6,7 @@ import 'package:eshopmultivendor/Helper/Session.dart';
 import 'package:eshopmultivendor/Helper/String.dart';
 import 'package:eshopmultivendor/Model/DocterRegisterModel/DoctorDegreeResponse.dart';
 import 'package:eshopmultivendor/Screen/Authentication/Login.dart';
-import 'package:eshopmultivendor/DoctorHomeScreen.dart';
+import 'package:eshopmultivendor/Screen/Doctor/DoctorHomeScreen.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 

@@ -856,6 +856,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
             NO_OFF_RATTING = data[NoOfRatings] ?? "";
             NO_OFF_RATTING = data[NoOfRatings] ?? "";
             var id = data[Id];
+            var registeration_no = data[RegistrationNo];
             var username = data[Username];
             var email = data[Email];
             var mobile = data[Mobile];
@@ -876,7 +877,8 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
             var pan_number = data[panNumber];
             var status = data[STATUS];
             var storeLogo = data[Signature];
-            onOf = data["online"] == "0" ? false : true;
+            var degreeName = data[DegreeName];
+            //onOf = data["online"] == "0" ? false : true;
 
             print("bank name : $bankName");
             saveUserDetail(
@@ -899,6 +901,8 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
               pan_number!,
               status!,
               storeLogo!,
+              registeration_no,
+                degreeName ?? ''
             );
           }
           setState(() {

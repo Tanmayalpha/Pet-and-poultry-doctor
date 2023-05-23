@@ -13,7 +13,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
-import '../../DoctorHomeScreen.dart';
+import '../Doctor/DoctorHomeScreen.dart';
 import '../Home.dart';
 import 'SendOtp.dart';
 
@@ -64,7 +64,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
       tax_number,
       pan_number,
       status,
-      signature;
+      signature ;
   bool _isNetworkAvail = true;
   var fcmToken = "";
 
@@ -250,11 +250,13 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
 
     apiBaseHelper.doctorPostAPICall(getDoctorLogin, data).then(
       (getdata) async {
-        // bool error = getdata["error"];
+        bool error = getdata["error"];
+
         String? msg = getdata["message"];
         print(getDoctorLogin);
         // if (!error) {
           //setSnackbar(msg!);
+        if(!(error)) {
           var data = getdata["data"][0];
           id = data[Id];
           username = data[Username];
@@ -263,7 +265,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
           address = data[Address];
           image = data[IMage];
           registeration_no = data[RegistrationNo];
-          //CUR_USERID = id!;
+          CUR_USERID = id!;
           CUR_USERNAME = username!;
           //CUR_BALANCE = balance!;
           idCard = data[IdCard] ?? "";
@@ -273,34 +275,38 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
           accname = data[accountName] ?? "";
           bankCode = data[BankCOde] ?? "";
           bankName = data[bankNAme] ?? "";
-         // latitutute = data[Latitude] ?? "";
+          // latitutute = data[Latitude] ?? "";
           //longitude = data[Longitude] ?? "";
           cheque = data[Cheque] ?? "";
           //tax_number = data[taxNumber] ?? "";
           //pan_number = data[panNumber] ?? "";
           //status = data[STATUS] ?? "";
           signature = data[Signature] ?? "";
+          degreeName = data[DegreeName] ?? "";
+
 
           saveUserDetail(
-            id!,
-            username!,
-            email!,
-            mobile!,
-            address!,
-            idCard!,
-            degree!,
-            certificate!,
-            accNo!,
-            accname!,
-            bankCode ?? "",
-            bankName ?? "",
-            latitutute ?? "",
-            longitude ?? "",
-            cheque ?? "",
-            tax_number?? "",
-            pan_number?? "",
-            status?? '',
-            signature?? '',
+              id!,
+              username!,
+              email!,
+              mobile!,
+              address!,
+              idCard!,
+              degree!,
+              certificate!,
+              accNo!,
+              accname!,
+              bankCode ?? "",
+              bankName ?? "",
+              latitutute ?? "",
+              longitude ?? "",
+              cheque ?? "",
+              tax_number ?? "",
+              pan_number ?? "",
+              status ?? '',
+              signature ?? '',
+              registeration_no ?? '',
+              degreeName ?? ''
           );
           setPrefrenceBool(isLogin, true);
           Navigator.pushReplacement(
@@ -309,14 +315,16 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
               builder: (context) => DoctorHomeScreen(),
             ),
           );
-        // } else {
-        //   await buttonController!.reverse();
-        //   setSnackbar(msg!);
-        //   setState(() {});
-        // }
+        } else {
+         setSnackbar(msg ?? '');
+
+          await buttonController!.reverse();
+
+          setState(() {});
+        }
       },
       onError: (error) {
-       // setSnackbar(error.toString());
+        setSnackbar(error.toString());
       },
     );
   }
@@ -673,5 +681,17 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
         child: Image.asset(Myassets.login_logo),
       ),
     );
+  }
+
+  setSnackbar(String msg) {
+    scaffoldMessengerKey.currentState!.showSnackBar(SnackBar(
+      content:  Text(
+        msg ?? '',
+        textAlign: TextAlign.center,
+        style: TextStyle(color: primary),
+      ),
+      backgroundColor: white,
+      elevation: 1.0,
+    ));
   }
 }

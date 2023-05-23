@@ -68,3 +68,58 @@ class AppBtn extends StatelessWidget {
     );
   }
 }
+
+class AppButton extends StatelessWidget {
+
+final VoidCallback? onTap ;
+final String ? titleText ;
+final bool? isLoading ;
+  const AppButton({
+    Key? key,this.onTap, this.titleText, this.isLoading
+  }) : super(key: key);
+
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Padding(
+      padding: EdgeInsets.only(
+        top: 25,
+      ),
+      child: CupertinoButton(
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          height: 45,
+          alignment: FractionalOffset.center,
+          decoration:  BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [grad2Color, grad2Color],
+              stops: [0, 1],
+            ),
+            borderRadius: new BorderRadius.all(
+              const Radius.circular(
+                10.0,
+              ),
+            ),
+          ),
+          child: !(isLoading ?? false)
+              ? Text(
+            titleText ??'',
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.headline6!.copyWith(
+              color: white,
+              fontWeight: FontWeight.normal,
+            ),
+          )
+              :  Center(child: CircularProgressIndicator()),
+        ),
+        onPressed: onTap,
+      ),
+    );
+
+  }
+
+
+}
