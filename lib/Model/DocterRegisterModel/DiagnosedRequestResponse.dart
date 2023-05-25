@@ -1,28 +1,28 @@
 // To parse this JSON data, do
 //
-//     final patientRequstResonse = patientRequstResonseFromJson(jsonString);
+//     final diagnosedRequstResonse = diagnosedRequstResonseFromJson(jsonString);
 
 import 'dart:convert';
 
-PatientRequstResonse patientRequstResonseFromJson(String str) => PatientRequstResonse.fromJson(json.decode(str));
+DiagnosedRequstResonse diagnosedRequstResonseFromJson(String str) => DiagnosedRequstResonse.fromJson(json.decode(str));
 
-String patientRequstResonseToJson(PatientRequstResonse data) => json.encode(data.toJson());
+String diagnosedRequstResonseToJson(DiagnosedRequstResonse data) => json.encode(data.toJson());
 
-class PatientRequstResonse {
+class DiagnosedRequstResonse {
   bool? error;
   String? message;
-  PatientData? data;
+  DiagnosedData? data;
 
-  PatientRequstResonse({
+  DiagnosedRequstResonse({
     this.error,
     this.message,
     this.data,
   });
 
-  factory PatientRequstResonse.fromJson(Map<String, dynamic> json) => PatientRequstResonse(
+  factory DiagnosedRequstResonse.fromJson(Map<String, dynamic> json) => DiagnosedRequstResonse(
     error: json["error"],
     message: json["message"],
-    data: PatientData.fromJson(json["data"]),
+    data: DiagnosedData.fromJson(json["data"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -32,27 +32,27 @@ class PatientRequstResonse {
   };
 }
 
-class PatientData {
-  List<Accepted>? latest;
-  List<Accepted>? accepted;
+class DiagnosedData {
+  List<Latest>? latests;
+  List<Latest>? accepted;
 
-  PatientData({
-    this.latest,
+  DiagnosedData({
+    this.latests,
     this.accepted,
   });
 
-  factory PatientData.fromJson(Map<String, dynamic> json) => PatientData(
-    latest: List<Accepted>.from(json["latest"].map((x) => Accepted.fromJson(x))),
-    accepted: List<Accepted>.from(json["accepted"].map((x) => Accepted.fromJson(x))),
+  factory DiagnosedData.fromJson(Map<String, dynamic> json) => DiagnosedData(
+    latests: List<Latest>.from(json["latests"].map((x) => Latest.fromJson(x))),
+    accepted: List<Latest>.from(json["accepted"].map((x) => Latest.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
-    "latest": List<dynamic>.from(latest!.map((x) => x.toJson())),
-    "accepted": List<dynamic>.from(accepted!.map((x) => x.toJson())),
+    "latests": List<dynamic>.from(latests!.map((x) => x.toJson())),
+    "accepted": List<dynamic>.from(accepted!.map((x) => x)),
   };
 }
 
-class Accepted {
+class Latest {
   String? username;
   String? email;
   String? mobile;
@@ -68,18 +68,23 @@ class Accepted {
   String? species;
   String? disease;
   String? image;
+  String? video;
   String? labReport;
   String? description;
   String? status;
   Json? json;
   String? doctorId;
+  String? srDoctorId;
   String? rejectedBy;
+  String? medicines;
+  String? diagnosis;
   DateTime? createdAt;
   DateTime? updatedAt;
-  String? fuid;
-  String? fcmID;
+  String? doctorName;
+  String? doctorEmail;
+  String? doctorPhone;
 
-  Accepted({
+  Latest({
     this.username,
     this.email,
     this.mobile,
@@ -95,19 +100,24 @@ class Accepted {
     this.species,
     this.disease,
     this.image,
+    this.video,
     this.labReport,
     this.description,
     this.status,
     this.json,
     this.doctorId,
+    this.srDoctorId,
     this.rejectedBy,
+    this.medicines,
+    this.diagnosis,
     this.createdAt,
     this.updatedAt,
-    this.fuid,
-    this.fcmID
+    this.doctorName,
+    this.doctorEmail,
+    this.doctorPhone,
   });
 
-  factory Accepted.fromJson(Map<String, dynamic> json) => Accepted(
+  factory Latest.fromJson(Map<String, dynamic> json) => Latest(
     username: json["username"],
     email: json["email"],
     mobile: json["mobile"],
@@ -123,22 +133,24 @@ class Accepted {
     species: json["species"],
     disease: json["disease"],
     image: json["image"],
+    video: json["video"],
     labReport: json["lab_report"],
     description: json["description"],
     status: json["status"],
     json: Json.fromJson(json["json"]),
     doctorId: json["doctor_id"],
+    srDoctorId: json["sr_doctor_id"],
     rejectedBy: json["rejected_by"],
-    fcmID: json["fcm_id"],
-    fuid: json["fuid"],
-
+    medicines: json["medicines"],
+    diagnosis: json["diagnosis"],
     createdAt: DateTime.parse(json["created_at"]),
     updatedAt: DateTime.parse(json["updated_at"]),
+    doctorName: json["doctor_name"],
+    doctorEmail: json["doctor_email"],
+    doctorPhone: json["doctor_phone"],
   );
 
   Map<String, dynamic> toJson() => {
-    "fcm_id":fcmID,
-    "fuid":fuid,
     "username": username,
     "email": email,
     "mobile": mobile,
@@ -154,14 +166,21 @@ class Accepted {
     "species": species,
     "disease": disease,
     "image": image,
+    "video": video,
     "lab_report": labReport,
     "description": description,
     "status": status,
     "json": json!.toJson(),
     "doctor_id": doctorId,
+    "sr_doctor_id": srDoctorId,
     "rejected_by": rejectedBy,
+    "medicines": medicines,
+    "diagnosis": diagnosis,
     "created_at": createdAt!.toIso8601String(),
     "updated_at": updatedAt!.toIso8601String(),
+    "doctor_name": doctorName,
+    "doctor_email": doctorEmail,
+    "doctor_phone": doctorPhone,
   };
 }
 
@@ -185,7 +204,7 @@ class Json {
   String? medication;
   String? medicine;
   String? surgery;
-  String? typeOfSurgeryRuminotomy;
+  String? typeOfSurgery;
   String? travellingHistory;
   String? symptoms;
   String? stoolConsitancy;
@@ -215,7 +234,7 @@ class Json {
     this.medication,
     this.medicine,
     this.surgery,
-    this.typeOfSurgeryRuminotomy,
+    this.typeOfSurgery,
     this.travellingHistory,
     this.symptoms,
     this.stoolConsitancy,
@@ -246,7 +265,7 @@ class Json {
     medication: json["medication"],
     medicine: json["medicine"],
     surgery: json["surgery"],
-    typeOfSurgeryRuminotomy: json["type_of_surgery:_Ruminotomy"],
+    typeOfSurgery: json["type_of_surgery"],
     travellingHistory: json["travelling_history"],
     symptoms: json["symptoms"],
     stoolConsitancy: json["stool_consitancy"],
@@ -277,7 +296,7 @@ class Json {
     "medication": medication,
     "medicine": medicine,
     "surgery": surgery,
-    "type_of_surgery:_Ruminotomy": typeOfSurgeryRuminotomy,
+    "type_of_surgery": typeOfSurgery,
     "travelling_history": travellingHistory,
     "symptoms": symptoms,
     "stool_consitancy": stoolConsitancy,

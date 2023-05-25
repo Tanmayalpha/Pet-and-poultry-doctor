@@ -64,7 +64,9 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
       tax_number,
       pan_number,
       status,
+      userType,
       signature ;
+
   bool _isNetworkAvail = true;
   var fcmToken = "";
 
@@ -84,7 +86,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
     buttonController = new AnimationController(
         duration: new Duration(milliseconds: 2000), vsync: this);
 
-    buttonSqueezeanimation = new Tween(
+    buttonSqueezeanimation =  Tween(
       begin: width * 0.7,
       end: 50.0,
     ).animate(
@@ -245,7 +247,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
     var data = {
       Mobile: mobile,
       Password: password,
-      //"fcm_id": "$fcmToken",
+      "fcm_id": "$fcmToken",
     };
 
     apiBaseHelper.doctorPostAPICall(getDoctorLogin, data).then(
@@ -258,6 +260,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
           //setSnackbar(msg!);
         if(!(error)) {
           var data = getdata["data"][0];
+          userType = data["doc_type"];
           id = data[Id];
           username = data[Username];
           email = data[Email];
@@ -306,7 +309,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
               status ?? '',
               signature ?? '',
               registeration_no ?? '',
-              degreeName ?? ''
+              degreeName ?? '',usertype: userType
           );
           setPrefrenceBool(isLogin, true);
           Navigator.pushReplacement(

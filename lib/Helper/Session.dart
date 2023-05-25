@@ -395,7 +395,9 @@ Future<void> saveUserDetail(
   String tax_number,
   String pan_number,
   String status,
-  String signature, String registeration_no, String degreeName,
+  String signature,
+  String registeration_no,
+  String degreeName, {String? usertype}
 ) async {
   final waitList = <Future<void>>[];
   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -419,6 +421,7 @@ Future<void> saveUserDetail(
   waitList.add(prefs.setString(Signature, signature));
   waitList.add(prefs.setString(RegistrationNo, registeration_no));
   waitList.add(prefs.setString(DegreeName, degreeName));
+  waitList.add(prefs.setString(UserType, usertype ?? '0'));
   await Future.wait(waitList);
 }
 
@@ -449,8 +452,9 @@ Map<String, String> get headers => {
     };
 
 Map<String, String> get doctorHeader => {
-  'Cookie': 'ci_session=ce8c48567ca7063ffec78d487d4be98f015a073a; ekart_security_cookie=bafae0824533cd0aaabf04cf9ad3f4c8'
-};
+      'Cookie':
+          'ci_session=ce8c48567ca7063ffec78d487d4be98f015a073a; ekart_security_cookie=bafae0824533cd0aaabf04cf9ad3f4c8'
+    };
 
 //==============================================================================
 
@@ -472,8 +476,8 @@ Future<void> clearUserSession() async {
 
 setDoctorSnackbar(String msg, BuildContext context) {
   ScaffoldMessenger.of(context).showSnackBar(
-     SnackBar(
-      content:  Text(
+    SnackBar(
+      content: Text(
         msg,
         textAlign: TextAlign.center,
         style: TextStyle(color: primary),

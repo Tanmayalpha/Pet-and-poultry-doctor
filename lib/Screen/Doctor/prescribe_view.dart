@@ -66,11 +66,11 @@ class _PrescribeScreenState extends State<PrescribeScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.deepOrange,
-        title: const Center(
-            child: Text(
+        centerTitle: true,
+        title:  Text(
           'Prescribed',
           style: TextStyle(color: Colors.white),
-        )),
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -200,11 +200,11 @@ class _PrescribeScreenState extends State<PrescribeScreen> {
                             const SizedBox(
                               height: 5,
                             ),
-                            const Text('Res',
+                           /* const Text('Res',
                                 style: TextStyle(
                                     color: primary,
                                     fontWeight: FontWeight.w400,
-                                    fontSize: 14)),
+                                    fontSize: 14)),*/
                             /*const SizedBox(
                               height: 5,
                             ),
@@ -222,7 +222,7 @@ class _PrescribeScreenState extends State<PrescribeScreen> {
                                     hintStyle: TextStyle(color: primary)),
                               ),
                             ),*/
-                            const SizedBox(
+                            /*const SizedBox(
                               height: 5,
                             ),
                             const Text('Patient/Pet/Farm Name',
@@ -336,7 +336,7 @@ class _PrescribeScreenState extends State<PrescribeScreen> {
                             ),
                             const SizedBox(
                               height: 5,
-                            ),
+                            ),*/
                             const Text('Date:',
                                 style: TextStyle(
                                     color: primary,
@@ -592,6 +592,7 @@ class _PrescribeScreenState extends State<PrescribeScreen> {
             ],
           );
         }).toList(),
+
       ),
     );
   }
@@ -634,4 +635,5 @@ class _PrescribeScreenState extends State<PrescribeScreen> {
       });
     }
   }
+
 }

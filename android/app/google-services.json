@@ -1,78 +1,34 @@
 {
   "project_info": {
-    "project_number": "493096036143",
-    "project_id": "food-on-the-way-4d876",
-    "storage_bucket": "food-on-the-way-4d876.appspot.com"
+    "project_number": "36153669747",
+    "firebase_url": "https://vetcare-8c397-default-rtdb.firebaseio.com",
+    "project_id": "vetcare-8c397",
+    "storage_bucket": "vetcare-8c397.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:493096036143:android:c9c73c414b1000f651e3da",
-        "android_client_info": {
-          "package_name": "com.food_on_the_way.delivery_boy"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "493096036143-pd9dg8sgloke6a9ji5vc75j2sogbcl7t.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.food_on_the_way.delivery_boy",
-            "certificate_hash": "688fa69646cb862d677b2630de357afce7115f3c"
-          }
-        },
-        {
-          "client_id": "493096036143-e3j2i0okvggsf73tt0jfplha088lvhrh.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDfyOqhC4zwFB-0fUZuQ7vw60mP_2Xzz8I"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "493096036143-e3j2i0okvggsf73tt0jfplha088lvhrh.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:493096036143:android:90aad1b9d49cbb5451e3da",
+        "mobilesdk_app_id": "1:36153669747:android:c05b65d6742e808c4f5206",
         "android_client_info": {
           "package_name": "com.petandpoultry.care"
         }
       },
       "oauth_client": [
         {
-          "client_id": "493096036143-rtv5l4ecetv65o16echg3k86tg03cj3v.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.petandpoultry.care",
-            "certificate_hash": "688fa69646cb862d677b2630de357afce7115f3c"
-          }
-        },
-        {
-          "client_id": "493096036143-e3j2i0okvggsf73tt0jfplha088lvhrh.apps.googleusercontent.com",
+          "client_id": "36153669747-3uvna3qtlb7h507bb2p3247hsvfkl0tq.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDfyOqhC4zwFB-0fUZuQ7vw60mP_2Xzz8I"
+          "current_key": "AIzaSyApn5ncJC7tywZvH_UMwbEgpTwk8Y7AeDE"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "493096036143-e3j2i0okvggsf73tt0jfplha088lvhrh.apps.googleusercontent.com",
+              "client_id": "36153669747-3uvna3qtlb7h507bb2p3247hsvfkl0tq.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
@@ -81,72 +37,35 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:493096036143:android:6685d7cc5c1e84e551e3da",
+        "mobilesdk_app_id": "1:36153669747:android:75246dbc1f2e8ce14f5206",
         "android_client_info": {
-          "package_name": "com.food_on_the_way_user"
+          "package_name": "com.vet.care"
         }
       },
       "oauth_client": [
         {
-          "client_id": "493096036143-j12b819e11lqkbq0pjgiuapvjfr9aekr.apps.googleusercontent.com",
+          "client_id": "36153669747-liid80v0cgi6bahaj5m8sisum6ildtla.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.food_on_the_way_user",
-            "certificate_hash": "688fa69646cb862d677b2630de357afce7115f3c"
+            "package_name": "com.vet.care",
+            "certificate_hash": "fbdc74764999339057153522ef65ce4d57c9c36f"
           }
         },
         {
-          "client_id": "493096036143-e3j2i0okvggsf73tt0jfplha088lvhrh.apps.googleusercontent.com",
+          "client_id": "36153669747-3uvna3qtlb7h507bb2p3247hsvfkl0tq.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDfyOqhC4zwFB-0fUZuQ7vw60mP_2Xzz8I"
+          "current_key": "AIzaSyApn5ncJC7tywZvH_UMwbEgpTwk8Y7AeDE"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "493096036143-e3j2i0okvggsf73tt0jfplha088lvhrh.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:493096036143:android:c258a14739a38b4c51e3da",
-        "android_client_info": {
-          "package_name": "com.foodontheway.admin"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "493096036143-gliahs8lg6op2v2ul2vu7g8bb95h6t1b.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.foodontheway.admin",
-            "certificate_hash": "688fa69646cb862d677b2630de357afce7115f3c"
-          }
-        },
-        {
-          "client_id": "493096036143-e3j2i0okvggsf73tt0jfplha088lvhrh.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDfyOqhC4zwFB-0fUZuQ7vw60mP_2Xzz8I"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "493096036143-e3j2i0okvggsf73tt0jfplha088lvhrh.apps.googleusercontent.com",
+              "client_id": "36153669747-3uvna3qtlb7h507bb2p3247hsvfkl0tq.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

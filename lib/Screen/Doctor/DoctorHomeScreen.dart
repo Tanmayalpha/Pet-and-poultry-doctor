@@ -1,13 +1,18 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:eshopmultivendor/Helper/ApiBaseHelper.dart';
 import 'package:eshopmultivendor/Helper/Color.dart';
+import 'package:eshopmultivendor/Helper/Constant.dart';
+import 'package:eshopmultivendor/Model/DocterRegisterModel/DiagnosedRequestResponse.dart';
 import 'package:eshopmultivendor/Screen/Doctor/AnimalDetailScreen.dart';
 import 'package:eshopmultivendor/Screen/Authentication/Login.dart';
+import 'package:eshopmultivendor/Screen/Doctor/request_for_withdraw.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
+import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import '../../Helper/Session.dart';
 import '../../Helper/String.dart';
 import '../../Model/DocterRegisterModel/patient_request_response.dart';
@@ -20,6 +25,7 @@ import '../Profile.dart';
 import '../WalletHistory.dart';
 import '../contactusnew.dart';
 import '../daily_collection.dart';
+import 'DiagnosedHistoryScreen.dart';
 import 'privacynew.dart';
 import 'tncnew.dart';
 import '../transaction.dart';
@@ -31,13 +37,18 @@ class DoctorHomeScreen extends StatefulWidget {
   State<DoctorHomeScreen> createState() => _DoctorHomeScreenState();
 }
 
+
 class _DoctorHomeScreenState extends State<DoctorHomeScreen>
     with TickerProviderStateMixin {
   int curDrwSel = 0;
 
   ApiBaseHelper apiBaseHelper = ApiBaseHelper();
 
-  bool isLoading = false ;
+  bool isLoading = false;
+
+
+
+
 
   //==============================================================================
 //============================ AppBar ==========================================
@@ -59,20 +70,32 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
         onTap: (int index) {
           tabController!.animateTo(index);
 
-          getRequest();
+          print("_______${userType}_______");
 
-
+          if (userType == '0') {
+            getRequest();
+          } else {
+            getDiagnosedRequest();
+          }
         },
-
 
 
         tabs: [
           Tab(
-            child: SizedBox(width: MediaQuery.of(context).size.width/3,child: Center(child: Text('Latest')),),
-        ),
+            child: SizedBox(width: MediaQuery
+                .of(context)
+                .size
+                .width / 3, child: Center(child: Text('Latest')),),
+          ),
           Tab(
-              child: SizedBox(width: MediaQuery.of(context).size.width/3,child: Center(child: Text('Accepted')),)
-          ),],
+              child: SizedBox(width: MediaQuery
+                  .of(context)
+                  .size
+                  .width / 3,
+                child: Center(child: userType == '0' ? Text('Accepted') : Text(
+                    'Approved')),)
+          ),
+        ],
       ),
 
       actions: [
@@ -97,14 +120,20 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
 
   TabController? tabController;
 
+  String? userType;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     tabController = TabController(length: 2, vsync: this);
-
     getProfile();
-    getRequest();
+
+    if (userType == '0') {
+      getRequest();
+    } else {
+      getDiagnosedRequest();
+    }
   }
 
   @override
@@ -117,260 +146,299 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
       //
       // title: Image.asset("assets/logo/food_on_the_way.png",height: 70,),
       // backgroundColor: white,),
-      body:isLoading ? Center(child: CircularProgressIndicator(),) :  TabBarView(
+      body: isLoading
+          ? Center(child: CircularProgressIndicator(),)
+          : TabBarView(
         physics: NeverScrollableScrollPhysics(),
 
         controller: tabController,
-      children: [
-        SingleChildScrollView(
-        padding: const EdgeInsets.all(5.0),
-        child: ListView.builder(
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
-          itemCount: latestList.length,
-          itemBuilder: (BuildContext context, int index) {
-            var item = latestList[index];
-            return InkWell(
-              onTap:(){
-                Navigator.push(context, MaterialPageRoute(builder: (context) => AnimalDetailScreen(animalDetail: item),));
-              },
-              child: Container(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Card(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                    color: white,
-                    elevation: 2,
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              top: 10.0, left: 10, right: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "Pet Owner",
-                                style: TextStyle(fontWeight: FontWeight.bold),
+        children: [
+          userType == '0' ? latestList.isEmpty ? Center(child: Text('Not any request available'),) : SingleChildScrollView(
+            padding: const EdgeInsets.all(5.0),
+            child: ListView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              reverse: true,
+              itemCount: latestList.length,
+              itemBuilder: (BuildContext context, int index) {
+                var item = latestList[index];
+                return InkWell(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(
+                      builder: (context) =>
+                          AnimalDetailScreen(animalDetail: item,
+                              isFromApproved: true,userFueId: item.fuid, userFcmToken: item.fcmID),));
+                  },
+                  child: Container(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                        color: white,
+                        elevation: 2,
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 10.0, left: 10, right: 10),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment
+                                    .spaceBetween,
+                                children: [
+                                  Text(
+                                    "Pet Owner",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(item.username ?? ''),
+                                ],
                               ),
-                              Text(item.username ?? ''),
-                            ],
-                          ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 10.0, left: 10, right: 10),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment
+                                    .spaceBetween,
+                                children: [
+                                  Text(
+                                    "Email",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(item.email ?? ''),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 10.0, left: 10, right: 10),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment
+                                    .spaceBetween,
+                                children: [
+                                  Text(
+                                    "Owner Contact:",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(item.mobile ?? ''),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 10.0, left: 10, right: 10),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment
+                                    .spaceBetween,
+                                children: [
+                                  Text(
+                                    "Breeds ",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(item.breed ?? ''),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 10.0, left: 10, right: 10),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment
+                                    .spaceBetween,
+                                children: [
+                                  Text(
+                                    "Disease",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(item.disease ?? ''),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment
+                                    .spaceBetween,
+                                children: [
+                                  InkWell(
+                                    onTap: () {
+                                      acceptRejectRequest(item.id ?? '', '1');
+                                    },
+                                    child: Container(
+                                        height: 35,
+                                        width: 110,
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(
+                                                10),
+                                            color: Colors.green),
+                                        child: Center(
+                                          child: Text(
+                                            "Accept",
+                                            style: TextStyle(color: white),
+                                          ),
+                                        )),
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+                                      acceptRejectRequest(item.id ?? '', '2');
+                                    },
+                                    child: Container(
+                                        height: 35,
+                                        width: 110,
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(
+                                                10),
+                                            color: Colors.red),
+                                        child: Center(
+                                            child: Text(
+                                              "Reject",
+                                              style: TextStyle(color: white),
+                                            ))),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              top: 10.0, left: 10, right: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "Email",
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                              Text(item.email ?? ''),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              top: 10.0, left: 10, right: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "Owner Contact:",
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                              Text(item.mobile ?? ''),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              top: 10.0, left: 10, right: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "Breeds ",
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                              Text(item.breed ?? ''),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              top: 10.0, left: 10, right: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "Disease",
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                              Text(item.disease ?? ''),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              InkWell(
-                                onTap: (){
-                                  acceptRejectRequest(item.id ?? '', '1');
-                                },
-                                child: Container(
-                                    height: 35,
-                                    width: 110,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        color: Colors.green),
-                                    child: Center(
-                                      child: Text(
-                                        "Accept",
-                                        style: TextStyle(color: white),
-                                      ),
-                                    )),
-                              ),
-                              InkWell(
-                                onTap: (){
-                                  acceptRejectRequest(item.id ?? '', '2');
-                                },
-                                child: Container(
-                                    height: 35,
-                                    width: 110,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        color: Colors.red),
-                                    child: Center(
-                                        child: Text(
-                                          "Reject",
-                                          style: TextStyle(color: white),
-                                        ))),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
                   ),
-                ),
-              ),
-            );
-          },
-        ),
-      ),
-        SingleChildScrollView(
-          padding: const EdgeInsets.all(5.0),
-          child: ListView.builder(
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            itemCount: acceptedList.length,
-            itemBuilder: (BuildContext context, int index) {
-              var item = acceptedList[index];
-              return InkWell(
-                  onTap:(){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => AnimalDetailScreen(animalDetail: item),));
+                );
+              },
+            ),
+          ) : seniorDocLatestView(),
+          userType == '0' ? acceptedList.isEmpty ? Center(child: Text('Not any request available'),) : SingleChildScrollView(
+            padding: const EdgeInsets.all(5.0),
+            child: ListView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: acceptedList.length,
+              itemBuilder: (BuildContext context, int index) {
+                var item = acceptedList[index];
+                return InkWell(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(
+                      builder: (context) =>
+                          AnimalDetailScreen(animalDetail: item),));
                   },
-                child: Container(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)),
-                      color: white,
-                      elevation: 2,
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                top: 10.0, left: 10, right: 10),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "Pet Owner",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                Text(item.username ?? ''),
-                              ],
+                  child: Container(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                        color: white,
+                        elevation: 2,
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 10.0, left: 10, right: 10),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment
+                                    .spaceBetween,
+                                children: [
+                                  Text(
+                                    "Pet Owner",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(item.username ?? ''),
+                                ],
+                              ),
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                top: 10.0, left: 10, right: 10),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "Email",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                Text(item.email ?? ''),
-                              ],
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 10.0, left: 10, right: 10),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment
+                                    .spaceBetween,
+                                children: [
+                                  Text(
+                                    "Email",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(item.email ?? ''),
+                                ],
+                              ),
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                top: 10.0, left: 10, right: 10),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "Owner Contact:",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                Text(item.mobile ?? ''),
-                              ],
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 10.0, left: 10, right: 10),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment
+                                    .spaceBetween,
+                                children: [
+                                  Text(
+                                    "Owner Contact:",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(item.mobile ?? ''),
+                                ],
+                              ),
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                top: 10.0, left: 10, right: 10),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "Breeds ",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                Text(item.breed ?? ''),
-                              ],
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 10.0, left: 10, right: 10),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment
+                                    .spaceBetween,
+                                children: [
+                                  Text(
+                                    "Breeds ",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(item.breed ?? ''),
+                                ],
+                              ),
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                top: 10.0, left: 10, right: 10),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "Disease",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                Text(item.disease ?? ''),
-                              ],
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 10.0, left: 10, right: 10),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment
+                                    .spaceBetween,
+                                children: [
+                                  Text(
+                                    "Disease",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(item.disease ?? ''),
+                                ],
+                              ),
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                top: 10.0, left: 10, right: 10),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "Status",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                Text('Accepted'),
-                              ],
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 10.0, left: 10, right: 10, bottom: 10),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment
+                                    .spaceBetween,
+                                children: [
+                                  Text(
+                                    "Status",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.all(8),
+
+                                    decoration: BoxDecoration(
+                                        color: primary,
+                                        borderRadius: BorderRadius.circular(10)),
+                                    child: Text(checkStatue(item.status ?? '',), style: TextStyle(color: white),),),
+                                ],
+                              ),
                             ),
-                          ),
-                          /*Padding(
+                            /*Padding(
                             padding: const EdgeInsets.all(10.0),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -401,16 +469,16 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
                               ],
                             ),
                           ),*/
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-              );
-            },
-          ),
-        ),
-      ],),
+                );
+              },
+            ),
+          ) : seniorDocApprovedView(),
+        ],),
     );
   }
 
@@ -433,11 +501,10 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
               Divider(),
               // _getDrawerItem(
               //     2, getTranslated(context, "CUSTOMERS")!, Icons.person),
-              // _getDrawerItem(3, getTranslated(context, "WALLETHISTORY")!,
-              //     Icons.account_balance_wallet_outlined),
+              _getDrawerItem(11, "WALLET",
+                  Icons.account_balance_wallet_outlined),
               // _getDrawerItem(11, "Daily Collection", Icons.account_balance_wallet_outlined),
-              // _getDrawerItem(12, "Transaction",
-              //     Icons.compare_arrows_sharp),
+              userType != '0' ? SizedBox() :_getDrawerItem(12, "Diagnosed", Icons.compare_arrows_sharp),
               // Divider(),
               // _getDrawerItem(4, getTranslated(context, "PRODUCTS")!,
               //     Icons.production_quantity_limits_outlined),
@@ -470,11 +537,11 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
       decoration: BoxDecoration(
         gradient: curDrwSel == index
             ? LinearGradient(
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-                colors: [secondary.withOpacity(0.2), primary.withOpacity(0.2)],
-                stops: [0, 1],
-              )
+          begin: Alignment.centerLeft,
+          end: Alignment.centerRight,
+          colors: [secondary.withOpacity(0.2), primary.withOpacity(0.2)],
+          stops: [0, 1],
+        )
             : null,
         borderRadius: BorderRadius.only(
           topRight: Radius.circular(50),
@@ -495,14 +562,14 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
         onTap: () {
           if (title == getTranslated(context, "HOME")!) {
             setState(
-              () {
+                  () {
                 curDrwSel = index;
               },
             );
             Navigator.pop(context);
           } else if (title == getTranslated(context, "ORDERS")!) {
             setState(
-              () {
+                  () {
                 curDrwSel = index;
               },
             );
@@ -515,7 +582,7 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
             );
           } else if (title == getTranslated(context, "CUSTOMERS")!) {
             setState(
-              () {
+                  () {
                 curDrwSel = index;
               },
             );
@@ -528,7 +595,7 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
             );
           } else if (title == getTranslated(context, "WALLETHISTORY")!) {
             setState(
-              () {
+                  () {
                 curDrwSel = index;
               },
             );
@@ -541,7 +608,7 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
             );
           } else if (title == "Daily Collection") {
             setState(
-              () {
+                  () {
                 curDrwSel = index;
               },
             );
@@ -554,7 +621,7 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
             );
           } else if (title == "Transaction") {
             setState(
-              () {
+                  () {
                 curDrwSel = index;
               },
             );
@@ -567,7 +634,7 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
             );
           } else if (title == getTranslated(context, "PRODUCTS")!) {
             setState(
-              () {
+                  () {
                 curDrwSel = index;
               },
             );
@@ -575,21 +642,22 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => ProductList(
-                  flag: '',
-                ),
+                builder: (context) =>
+                    ProductList(
+                      flag: '',
+                    ),
               ),
             );
           } else if (title == getTranslated(context, "ChangeLanguage")!) {
             setState(
-              () {
+                  () {
                 curDrwSel = index;
               },
             );
             // languageDialog();
           } else if (title == getTranslated(context, "T_AND_C")!) {
             setState(
-              () {
+                  () {
                 curDrwSel = index;
               },
             );
@@ -602,7 +670,7 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
             );
           } else if (title == getTranslated(context, "CONTACTUS")!) {
             setState(
-              () {
+                  () {
                 curDrwSel = index;
               },
             );
@@ -617,7 +685,7 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
             });
           } else if (title == getTranslated(context, "PRIVACYPOLICY")!) {
             setState(
-              () {
+                  () {
                 curDrwSel = index;
               },
             );
@@ -631,9 +699,22 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
           } else if (title == getTranslated(context, "LOGOUT")!) {
             Navigator.pop(context);
             logOutDailog();
-          } else if (title == "Add Product") {
+          } else if (title == "Diagnosed") {
             setState(
-              () {
+                  () {
+                curDrwSel = index;
+              },
+            );
+            Navigator.pop(context);
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => DiagnosedDataScreen(),
+              ),
+            );
+          }else if (title == "Add Product") {
+            setState(
+                  () {
                 curDrwSel = index;
               },
             );
@@ -642,6 +723,19 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
               context,
               MaterialPageRoute(
                 builder: (context) => AddProduct(),
+              ),
+            );
+          } else {
+            setState(
+                  () {
+                curDrwSel = index;
+              },
+            );
+            Navigator.pop(context);
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => WithdrawRequestScreen(),
               ),
             );
           }
@@ -667,7 +761,8 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
                 children: [
                   Text(
                     CUR_USERNAME!,
-                    style: Theme.of(context)
+                    style: Theme
+                        .of(context)
                         .textTheme
                         .subtitle1!
                         .copyWith(color: white, fontWeight: FontWeight.bold),
@@ -692,7 +787,8 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
                       children: [
                         Text(
                           getTranslated(context, "EDIT_PROFILE_LBL")!,
-                          style: Theme.of(context)
+                          style: Theme
+                              .of(context)
                               .textTheme
                               .caption!
                               .copyWith(color: white),
@@ -722,13 +818,13 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
               ),
               child: LOGO != ''
                   ? ClipRRect(
-                      borderRadius: BorderRadius.circular(100.0),
-                      child: profilePhoto(62),
-                    )
+                borderRadius: BorderRadius.circular(100.0),
+                child: profilePhoto(62),
+              )
                   : ClipRRect(
-                      borderRadius: BorderRadius.circular(100.0),
-                      child: imagePlaceHolder(62),
-                    ),
+                borderRadius: BorderRadius.circular(100.0),
+                child: imagePlaceHolder(62),
+              ),
             ),
           ],
         ),
@@ -789,7 +885,8 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
               ),
               content: Text(
                 getTranslated(context, "LOGOUTTXT")!,
-                style: Theme.of(this.context)
+                style: Theme
+                    .of(this.context)
                     .textTheme
                     .subtitle1!
                     .copyWith(color: fontColor),
@@ -798,11 +895,12 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
                 new TextButton(
                     child: Text(
                       getTranslated(context, "LOGOUTNO")!,
-                      style: Theme.of(this.context)
+                      style: Theme
+                          .of(this.context)
                           .textTheme
                           .subtitle2!
                           .copyWith(
-                              color: lightBlack, fontWeight: FontWeight.bold),
+                          color: lightBlack, fontWeight: FontWeight.bold),
                     ),
                     onPressed: () {
                       Navigator.of(context).pop(false);
@@ -810,14 +908,18 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
                 new TextButton(
                   child: Text(
                     getTranslated(context, "LOGOUTYES")!,
-                    style: Theme.of(this.context).textTheme.subtitle2!.copyWith(
+                    style: Theme
+                        .of(this.context)
+                        .textTheme
+                        .subtitle2!
+                        .copyWith(
                         color: fontColor, fontWeight: FontWeight.bold),
                   ),
                   onPressed: () {
                     clearUserSession();
                     Navigator.of(context).pushAndRemoveUntil(
                         MaterialPageRoute(builder: (context) => Login()),
-                        (Route<dynamic> route) => false);
+                            (Route<dynamic> route) => false);
                   },
                 )
               ],
@@ -830,10 +932,11 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
 
   Future<void> getProfile() async {
     CUR_USERID = await getPrefrence(UserId);
+    userType = await getPrefrence(UserType);
 
-    var parameter = {Id: CUR_USERID};
+    var parameter = {UserId: CUR_USERID};
     apiBaseHelper.doctorPostAPICall(getDoctorProfile, parameter).then(
-      (getdata) async {
+          (getdata) async {
         print("_______${parameter}_______");
         bool error = getdata["error"];
         String? msg = getdata["message"];
@@ -852,6 +955,7 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
           var mobile = data[Mobile];
           var address = data[Address];
           var registeration_no = data[RegistrationNo];
+          var userType = data[UserType];
           CUR_USERID = id!;
           CUR_USERNAME = username!;
           var idCard = data[IdCard];
@@ -894,7 +998,8 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
               status ?? '',
               signature ?? '',
               registeration_no,
-              degreeName ?? '');
+              degreeName ?? '',
+              usertype: userType);
         } else {
           if (mounted)
             setState(() {
@@ -912,56 +1017,530 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
     );
   }
 
-List<Accepted> latestList = [];
-List<Accepted> acceptedList = [];
+  List<Accepted> latestList = [];
+  List<Accepted> acceptedList = [];
+  List<Latest> acceptedDiagnosed = [];
+  List<Latest> latestDiagnosed = [];
 
-Future<void> getRequest()async{
-  isLoading =  true;
-  setState(() {
-
-  });
-
-  CUR_USERID = await getPrefrence(UserId);
-
-  var perameter = {UserId: CUR_USERID};
-
-    apiBaseHelper.doctorPostAPICall(getPatientRequests, perameter).then(
-            (getData) async{
-
-      bool error = getData["error"];
-      String? msg = getData["message"];
-
-      if (!error) {
-
-        acceptedList=   PatientRequstResonse.fromJson(jsonDecode(jsonEncode(getData))).data?.accepted ?? [];
-        latestList=   PatientRequstResonse.fromJson(jsonDecode(jsonEncode(getData))).data?.latest ?? [];
-        print("_______${acceptedList.first.disease}_______");
-
-       setState(() {
-isLoading =  false ;
-       });
-
-      }
+  Future<void> getRequest() async {
+    print("_______${userType}_______");
+    isLoading = true;
+    setState(() {
 
     });
 
-}
+    CUR_USERID = await getPrefrence(UserId);
 
-  Future<void> acceptRejectRequest(String id, String status) async{
+    var perameter = {UserId: CUR_USERID};
+
+    apiBaseHelper.doctorPostAPICall(getPatientRequests, perameter).then(
+            (getData) async {
+          print("_______${getPatientRequests}_______");
+          bool error = getData["error"];
+          String? msg = getData["message"];
+
+          if (!error) {
+            acceptedList = PatientRequstResonse
+                .fromJson(jsonDecode(jsonEncode(getData)))
+                .data
+                ?.accepted ?? [];
+            latestList = PatientRequstResonse
+                .fromJson(jsonDecode(jsonEncode(getData)))
+                .data
+                ?.latest ?? [];
+
+           // updateFid(acceptedList.first.fuid);
+
+            setState(() {
+              isLoading = false;
+            });
+          }
+        });
+  }
+
+  Future<void> getDiagnosedRequest() async {
+    isLoading = true;
+    setState(() {});
+
+    CUR_USERID = await getPrefrence(UserId);
+
+    var perameter = {UserId: CUR_USERID};
+
+    apiBaseHelper.doctorPostAPICall(getDiagnosedRequests, perameter).then(
+            (getData) async {
+          bool error = getData["error"];
+          String? msg = getData["message"];
+
+          if (!error) {
+            acceptedDiagnosed = DiagnosedRequstResonse
+                .fromJson(jsonDecode(jsonEncode(getData)))
+                .data
+                ?.accepted ?? [];
+            latestDiagnosed = DiagnosedRequstResonse
+                .fromJson(jsonDecode(jsonEncode(getData)))
+                .data
+                ?.latests ?? [];
+
+
+            setState(() {
+              isLoading = false;
+            });
+          }
+        });
+  }
+
+  Future<void> acceptRejectRequest(String id, String status) async {
     CUR_USERID = await getPrefrence(UserId);
 
     var parameter = {
       UserId: CUR_USERID,
       Id: id,
-      Status:status
-
+      Status: status,
+      'remarks':remarkController.text.isEmpty ? '': remarkController.text
     };
-    apiBaseHelper.doctorPostAPICall(getAcceptRejectRequests, parameter).then((getData) {
-
+    apiBaseHelper.doctorPostAPICall(getAcceptRejectRequests, parameter).then((
+        getData) {
       setDoctorSnackbar(getData["message"], context);
+      //latestList.removeWhere((element) => element.id == id);
+      if (userType == '0') {
+        getRequest();
+      } else {
+        getDiagnosedRequest();
+        Navigator.pop(context);
+      }
+
 
     });
-
-
   }
+
+  Widget seniorDocLatestView() {
+    return  latestDiagnosed.isEmpty ? Center(child: Text('Not any request available'),) : SingleChildScrollView(
+      padding: const EdgeInsets.all(5.0),
+      child: ListView.builder(
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
+        itemCount: latestDiagnosed.length,
+        itemBuilder: (BuildContext context, int index) {
+          var item = latestDiagnosed[index];
+          return InkWell(
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(
+                builder: (context) => AnimalDetailScreen(animalDetail: item),));
+            },
+            child: Container(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                  color: white,
+                  elevation: 2,
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            top: 10.0, left: 10, right: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Doctor Name",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text(item.doctorName ?? ''),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            top: 10.0, left: 10, right: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Email",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text(item.doctorEmail ?? ''),
+                          ],
+                        ),
+                      ),
+
+                      /*Padding(
+                        padding: const EdgeInsets.only(
+                            top: 10.0, left: 10, right: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Medicine",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text(item.medicines ?? ''),
+                          ],
+                        ),
+                      ),*/
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            top: 10.0, left: 10, right: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Disease",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text(item.disease ?? ''),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            top: 10.0, left: 10, right: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Status",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text('Pending'),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                remarkDialouge('4', item.id ?? '');
+                              },
+                              child: Container(
+                                  height: 35,
+                                  width: 110,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: Colors.green),
+                                  child: Center(
+                                    child: Text(
+                                      "Approved",
+                                      style: TextStyle(color: white),
+                                    ),
+                                  )),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                remarkDialouge('5', item.id ?? '');
+                              },
+                              child: Container(
+                                  height: 35,
+                                  width: 110,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: Colors.red),
+                                  child: Center(
+                                      child: Text(
+                                        "Unapproved",
+                                        style: TextStyle(color: white),
+                                      ))),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget seniorDocApprovedView() {
+    return acceptedDiagnosed.isEmpty ? Center(child: Text('Not any request available'),) : SingleChildScrollView(
+      padding: const EdgeInsets.all(5.0),
+      child: ListView.builder(
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
+        itemCount: acceptedDiagnosed.length,
+        itemBuilder: (BuildContext context, int index) {
+          var item = acceptedDiagnosed[index];
+          return InkWell(
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(
+                builder: (context) => AnimalDetailScreen(animalDetail: item),));
+            },
+            child: Container(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                  color: white,
+                  elevation: 2,
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            top: 10.0, left: 10, right: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Doctor Name",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text(item.doctorName ?? ''),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            top: 10.0, left: 10, right: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Email",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text(item.doctorEmail ?? ''),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            top: 10.0, left: 10, right: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Diagnosis",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text(item.diagnosis ?? ''),
+                          ],
+                        ),
+                      ),
+                      /*Padding(
+                        padding: const EdgeInsets.only(
+                            top: 10.0, left: 10, right: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Medicine",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text(item.medicines ?? ''),
+                          ],
+                        ),
+                      ),*/
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            top: 10.0, left: 10, right: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Disease",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text(item.disease ?? ''),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            top: 10.0, left: 10, right: 10, bottom: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Status",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Container(
+                              padding: EdgeInsets.all(8),
+
+                              decoration: BoxDecoration(
+                                  color: primary,
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Text(checkStatue(item.status ?? '',), style: TextStyle(color: white),),),
+                          ],
+                        ),
+                      ),
+                      /*Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                    height: 35,
+                                    width: 110,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: Colors.green),
+                                    child: Center(
+                                      child: Text(
+                                        "Accept",
+                                        style: TextStyle(color: white),
+                                      ),
+                                    )),
+                                Container(
+                                    height: 35,
+                                    width: 110,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: Colors.red),
+                                    child: Center(
+                                        child: Text(
+                                          "Reject",
+                                          style: TextStyle(color: white),
+                                        ))),
+                              ],
+                            ),
+                          ),*/
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+String checkStatue(String status){
+    if(status== '0'){
+      return 'Pending';
+    }else if(status== '1'){
+      return 'Accepted';
+    }else if(status== '2'){
+      return 'Rejected';
+    }else if(status== '3'){
+      return 'Diagnosed';
+    }else {
+      return 'Approved';
+    }
+}
+
+
+  bool loading = true;
+
+
+
+  String email = "";
+
+
+
+  final remarkController = TextEditingController();
+
+  remarkDialouge(String status, String id) async {
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setStater) {
+            return AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(5.0),
+                ),
+              ),
+              content: TextFormField(
+                controller: remarkController,
+                decoration: InputDecoration(hintText: 'Add remark'),
+              ),
+              actions: <Widget>[
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(backgroundColor: primary),
+                    onPressed: () {
+                      if (remarkController.text.isEmpty) {
+                        setDoctorSnackbar(" please add remark", context);
+                      } else {
+                        acceptRejectRequest(id, status);
+                      }
+                    }, child: Text('Submit'))
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  updateFid(fid) async {
+
+    CUR_USERID = await getPrefrence(UserId);
+    try {
+      /*setState(() {
+        loading = true;
+      });*/
+      Map params = {
+        "user_id": CUR_USERID.toString(),
+        "fuid": fid,
+      };
+      Map response = await apiBaseHelper.postAPICall(
+          Uri.parse(doctorBaseUrl + "update_fuid"), params);
+      setState(() {
+        //loading = false;
+      });
+      if (!response['error']) {
+
+      } else {
+
+      }
+    } on TimeoutException catch (_) {
+      setState(() {
+        //loading = true;
+      });
+    }
+  }
+
+  callChat() async {
+    String? name = await getPrefrence(Username);
+    String? email = await getPrefrence(Email);
+    print(email);
+    try {
+      UserCredential data =
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email.toString(),
+        password: "Vetcare@123",
+      );
+      await FirebaseChatCore.instance.createUserInFirestore(
+        types.User(
+          firstName: name.toString(),
+          id: data.user!.uid,
+          imageUrl: 'https://i.pravatar.cc/300?u=${email.toString()}',
+          lastName: "",
+        ),
+      );
+      updateFid(data.user!.uid);
+    } catch (e) {
+      final credential =
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email.toString(),
+        password: "Vetcare@123",
+      );
+      // App.localStorage.setString("firebaseUid", credential.user!.uid);
+      await FirebaseChatCore.instance.createUserInFirestore(
+        types.User(
+          firstName: name.toString(),
+          id: credential.user!.uid,
+          imageUrl: 'https://i.pravatar.cc/300?u=${email.toString()}',
+          lastName: "",
+        ),
+      );
+      updateFid(credential.user!.uid);
+      print(e.toString());
+    }
+  }
+
+
 }
