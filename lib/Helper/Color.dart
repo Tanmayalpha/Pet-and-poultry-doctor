@@ -21,6 +21,7 @@ const Color fontColor = Color(0xffF55F05);
 const Color grad1Color = Color(0xffFFBD69);
 const Color grad2Color = Color(0xffF55F05);
  const Color secondary = Color(0xffF55F05);
+const Color primary2 = Color(0xffF55F05);
 
 //const Color lightWhite2 = Color(0xffEEF2F3);
 

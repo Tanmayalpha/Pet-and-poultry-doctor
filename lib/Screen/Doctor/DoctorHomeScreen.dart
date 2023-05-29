@@ -128,9 +128,10 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
     super.initState();
     tabController = TabController(length: 2, vsync: this);
     getProfile();
-
+    callChat();
     if (userType == '0') {
       getRequest();
+
     } else {
       getDiagnosedRequest();
     }
@@ -1477,6 +1478,8 @@ String checkStatue(String status){
 
   updateFid(fid) async {
 
+    print("_______fggdggggd_______");
+
     CUR_USERID = await getPrefrence(UserId);
     try {
       /*setState(() {
@@ -1500,6 +1503,8 @@ String checkStatue(String status){
       setState(() {
         //loading = true;
       });
+      print("_______errr_______");
+
     }
   }
 

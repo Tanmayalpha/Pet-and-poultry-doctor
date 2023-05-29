@@ -1,18 +1,12 @@
-import 'dart:async';
 import 'dart:ui';
 
 import 'package:eshopmultivendor/Helper/AppBtn.dart';
 import 'package:eshopmultivendor/Helper/Color.dart';
-import 'package:eshopmultivendor/Helper/Constant.dart';
 import 'package:eshopmultivendor/Helper/Session.dart';
 import 'package:eshopmultivendor/Helper/String.dart';
-import 'package:eshopmultivendor/Model/DocterRegisterModel/DiagnosedRequestResponse.dart';
-import 'package:eshopmultivendor/Model/DocterRegisterModel/patient_request_response.dart';
 import 'package:eshopmultivendor/Screen/Doctor/prescribe_view.dart';
 import 'package:eshopmultivendor/Screen/Home.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
 class AnimalDetailScreen extends StatefulWidget {
@@ -41,8 +35,6 @@ class _AnimalDetailScreenState extends State<AnimalDetailScreen> {
     // TODO: implement initState
     super.initState();
     getuserType();
-
-
     getProduct();
   }
 
@@ -73,7 +65,7 @@ class _AnimalDetailScreenState extends State<AnimalDetailScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Owner Information',
+                    /*Text('Owner Information',
                         style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold)),
                     SizedBox(height: 8),
@@ -146,7 +138,7 @@ class _AnimalDetailScreenState extends State<AnimalDetailScreen> {
                     //   SizedBox(width: 8),
                     //   Text('${widget.animalDetail?.mobile}'),
                     // ],),
-                    SizedBox(height: 16),
+                    SizedBox(height: 16),*/
                     /*Text('Animal Information',
                         style:
                         TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
@@ -969,6 +961,7 @@ class _AnimalDetailScreenState extends State<AnimalDetailScreen> {
       setState(() {});
     });
   }
+
   Widget priscriptionView (String diagnosis){
     return Align(
       alignment: Alignment.topLeft,

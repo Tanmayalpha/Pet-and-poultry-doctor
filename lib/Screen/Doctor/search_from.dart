@@ -48,7 +48,7 @@ class _SearchMedicineState extends State<SearchMedicine> {
           child: Icon(Icons.arrow_back, color: primary,),),
         title: Text("Search Product", style: TextStyle(color: primary),),
       ),
-      bottomNavigationBar: AppButton(titleText: 'Add Products',onTap: (){addProduct();}),
+      /*bottomNavigationBar: AppButton(titleText: 'Add Products',onTap: (){addProduct();}),*/
       body: Container(
         padding: EdgeInsets.all(16.0),
         child: SingleChildScrollView(
@@ -74,20 +74,20 @@ class _SearchMedicineState extends State<SearchMedicine> {
           itemCount: productList.length,
           itemBuilder: (context, index) =>
               InkWell(onTap: (){
-                //Navigator.pop(context, locationSearchData[index]);
+                Navigator.pop(context, productList[index]);
               },
                 child: Card(
                   child: ListTile(
                     
                     leading: Image.network(productList[index].image ?? ''),
                     title: Text(productList[index].name ?? ''),
-                    trailing: Checkbox(
+                    /*trailing: Checkbox(
                       onChanged: (value){
                         productList[index].isSelected = value ;
                         setState(() {
                         });
                       },
-                      value: productList[index].isSelected,),
+                      value: productList[index].isSelected,),*/
                   ),
                 ),
               ),

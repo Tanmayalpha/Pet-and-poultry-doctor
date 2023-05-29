@@ -208,7 +208,9 @@ class _DoctorResignationState extends State<RegistrationScreen> {
         //     "${widget.role == 1 ? "Doctor" : "Pharma(PMT Team & Marketing)"}",
         //     isTrue: true,
         //     context: context),
-      appBar: AppBar(backgroundColor: primary,
+      appBar: AppBar(
+        leading: IconButton(onPressed: (){Navigator.pop(context);},icon:Icon(Icons.arrow_back), color: white,),
+        backgroundColor: primary,
       centerTitle: true,
       title: Text(" Doctor Registration",style: TextStyle(color: white),),),
         body: Padding(
@@ -1270,6 +1272,7 @@ class _DoctorResignationState extends State<RegistrationScreen> {
         if(!(finalResult['error'])){
 
           Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Login(),));
+          setDoctorSnackbar(finalResult['message'], context);
 
         }else{
           setDoctorSnackbar(finalResult['message'], context);
@@ -1302,6 +1305,7 @@ Future<void> getSpecializationAndDegree() async{
         specializationList = _doctorDegreeResponse?.data?.specialization ?? [];
 
        setDoctorSnackbar(msg!,context);
+        setState(() {});
       } else {
        // await buttonController!.reverse();
        // setSnackbar(msg!);
@@ -1354,7 +1358,7 @@ Future<void> getSpecializationAndDegree() async{
 
   _getFromGallery(String from) async {
     final XFile? pickedFile =
-    await _picker.pickImage(source: ImageSource.gallery, imageQuality: 100);
+    await _picker.pickImage(source: ImageSource.gallery, imageQuality: 100,maxHeight: 480, maxWidth: 480);
     /* PickedFile? pickedFile = await ImagePicker().getImage(
       source: ImageSource.gallery,
     );*/
@@ -1383,7 +1387,7 @@ Future<void> getSpecializationAndDegree() async{
   }
   _getFromCamera(String from) async {
     final XFile? pickedFile =
-    await _picker.pickImage(source: ImageSource.camera, imageQuality: 100);
+    await _picker.pickImage(source: ImageSource.camera, imageQuality: 100, maxHeight: 480, maxWidth: 480);
     /*  PickedFile? pickedFile = await ImagePicker().getImage(
       source: ImageSource.camera,
     );*/

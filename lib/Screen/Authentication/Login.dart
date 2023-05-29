@@ -7,6 +7,8 @@ import 'package:eshopmultivendor/Helper/Session.dart';
 import 'package:eshopmultivendor/Helper/String.dart';
 import 'package:eshopmultivendor/Helper/app_assets.dart';
 import 'package:eshopmultivendor/Screen/Authentication/registration.dart';
+import 'package:eshopmultivendor/Screen/Doctor/privacynew.dart';
+import 'package:eshopmultivendor/Screen/Doctor/tncnew.dart';
 import 'package:eshopmultivendor/Screen/TermFeed/Privacy_Policy.dart';
 import 'package:eshopmultivendor/Screen/TermFeed/Terms_Conditions.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -364,7 +366,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => Terms_And_Condition(),
+                        builder: (context) => TNC(),
                       ),
                     );
                   },
@@ -393,7 +395,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => PrivacyPolicy(),
+                      builder: (context) => Privacy(),
                     ),
                   );
                 },

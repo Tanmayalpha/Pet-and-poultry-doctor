@@ -15,6 +15,7 @@ import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import 'Color.dart'  as theme;
 import 'Constant.dart';
@@ -132,7 +133,13 @@ class _ChatPageState extends State<ChatPage> {
           actions: [IconButton(
             iconSize: 80,
 
-              onPressed: (){
+              onPressed: ()async{
+                Map<Permission,
+                    PermissionStatus>
+                statuses = await [
+                Permission.camera,
+                    Permission.microphone,
+                ].request();
                 Navigator.push(context, MaterialPageRoute(builder: (context) => VideoCallClass(),));
               }, icon: Icon(Icons.video_call_outlined, size: 35, color: primary,))],
         ),

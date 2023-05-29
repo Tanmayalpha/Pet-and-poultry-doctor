@@ -29,9 +29,10 @@ class _PrivacyState extends State<Privacy> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(onPressed: (){Navigator.pop(context);},icon:Icon(Icons.arrow_back), color: white,),
         backgroundColor: primary,
         centerTitle: true,
-        title: Text("Privacy Policy"),),
+        title: Text("Privacy Policy",style: TextStyle(color: white)),),
          body:privacyResult !=null ? Html(data: privacyResult["data"][0]["value"])
         : Container(child: Center(child: CircularProgressIndicator()),),
     );
