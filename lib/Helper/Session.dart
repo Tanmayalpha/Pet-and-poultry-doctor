@@ -1,5 +1,6 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:eshopmultivendor/Localization/Demo_Localization.dart';
+import 'package:eshopmultivendor/Localization/Language_Constant.dart';
 import 'package:flutter/material.dart';
 import 'package:jaguar_jwt/jaguar_jwt.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -38,6 +39,10 @@ shadow() {
     ],
   );
 }
+
+
+
+
 
 //===========
 Future<String?> getPrefrence(String key) async {
@@ -487,3 +492,5 @@ setDoctorSnackbar(String msg, BuildContext context) {
     ),
   );
 }
+
+

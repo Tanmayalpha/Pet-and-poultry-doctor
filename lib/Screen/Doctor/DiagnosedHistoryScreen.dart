@@ -75,7 +75,7 @@ class _DiagnosedDataScreenState extends State<DiagnosedDataScreen> {
                                 .spaceBetween,
                             children: [
                               Text(
-                                "Pet Owner",
+                                getTranslated(context, "Pet_Owner") ?? '',
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold),
                               ),
@@ -91,7 +91,7 @@ class _DiagnosedDataScreenState extends State<DiagnosedDataScreen> {
                                 .spaceBetween,
                             children: [
                               Text(
-                                "Email",
+                                getTranslated(context, "Email") ?? '',
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold),
                               ),
@@ -107,7 +107,7 @@ class _DiagnosedDataScreenState extends State<DiagnosedDataScreen> {
                                 .spaceBetween,
                             children: [
                               Text(
-                                "Owner Contact:",
+                                getTranslated(context, "Owner_Contact") ?? '',
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold),
                               ),
@@ -123,7 +123,7 @@ class _DiagnosedDataScreenState extends State<DiagnosedDataScreen> {
                                 .spaceBetween,
                             children: [
                               Text(
-                                "Breeds ",
+                                getTranslated(context, "Breeds") ?? '',
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold),
                               ),
@@ -139,7 +139,7 @@ class _DiagnosedDataScreenState extends State<DiagnosedDataScreen> {
                                 .spaceBetween,
                             children: [
                               Text(
-                                "Disease",
+                                getTranslated(context, "Disease") ?? '',
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold),
                               ),
@@ -155,7 +155,7 @@ class _DiagnosedDataScreenState extends State<DiagnosedDataScreen> {
                                 .spaceBetween,
                             children: [
                               Text(
-                                "Status",
+                                getTranslated(context, "Status") ?? "Status",
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold),
                               ),
@@ -177,7 +177,7 @@ class _DiagnosedDataScreenState extends State<DiagnosedDataScreen> {
                                 .spaceBetween,
                             children: [
                               Text(
-                                "Support",
+                                getTranslated(context, "Support") ??"Support",
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold),
                               ),
@@ -195,7 +195,7 @@ class _DiagnosedDataScreenState extends State<DiagnosedDataScreen> {
                                   decoration: BoxDecoration(
                                       color: primary,
                                       borderRadius: BorderRadius.circular(10)),
-                                  child: Text('Chat', style: TextStyle(color: white),),),
+                                  child: Text(getTranslated(context, "Chat") ??'Chat', style: TextStyle(color: white),),),
                               ),
                             ],
                           ),

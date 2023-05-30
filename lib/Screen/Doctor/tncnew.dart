@@ -32,7 +32,7 @@ class _TNCState extends State<TNC> {
         leading: IconButton(onPressed: (){Navigator.pop(context);},icon:Icon(Icons.arrow_back), color: white,),
         backgroundColor: primary,
         centerTitle: true,
-        title: Text("Terms & Condition", style: TextStyle(color: white),),),
+        title: Text(getTranslated(context, "T_AND_C")!, style: TextStyle(color: white),),),
       body: termsConditionResult !=null ? Html(data: termsConditionResult["data"][0]["value"])
           : Container(child: Center(child: CircularProgressIndicator()),),
     );

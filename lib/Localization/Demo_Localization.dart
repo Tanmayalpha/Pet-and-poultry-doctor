@@ -38,13 +38,14 @@ class _DemoLocalizationsDelegate
   bool isSupported(Locale locale) {
     return [
       'en',
-      'zh',
-      'es',
+     /* 'zh',
+      'es',*/
       'hi',
-      'ar',
+      'mr'
+     /* 'ar',
       'ru',
       'ja',
-      'de',
+      'de',*/
     ].contains(locale.languageCode);
   }
 

@@ -49,6 +49,7 @@ String CUR_BALANCE = '';
 String LOGO = '';
 String RATTING = '';
 String NO_OFF_RATTING = '';
+// const String LAGUAGE_CODE = 'languageCode';
 
 //permission's
 bool readProduct = true;

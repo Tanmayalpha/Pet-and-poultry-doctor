@@ -232,7 +232,7 @@ class _AnimalDetailScreenState extends State<AnimalDetailScreen> {
                       ),
                     ),
                     SizedBox(height: 16),*/
-                    Text('Information',
+                    Text(getTranslated(context, 'General Information') ?? '',
                         style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold)),
                     SizedBox(height: 8),
@@ -244,189 +244,189 @@ class _AnimalDetailScreenState extends State<AnimalDetailScreen> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('Name of Pet :',
+                              Text(getTranslated(context, 'Name_of_Pet') ??'Name of Pet',
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.w600)),
                               SizedBox(
                                 height: 5,
                               ),
-                              Text('Type of Pet :',
+                              Text(getTranslated(context, 'Type_of_Pet') ??'Type of Pet ',
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.w600)),
                               SizedBox(
                                 height: 5,
                               ),
-                              Text('Breed of Pet :',
+                              Text(getTranslated(context, 'Breed_of_Pet') ??'Breed of Pet :',
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.w600)),
                               SizedBox(
                                 height: 5,
                               ),
-                              Text('Sex of Pet :',
+                              Text(getTranslated(context, 'Sex_of_Pet') ??'Sex of Pet :',
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.w600)),
                               SizedBox(
                                 height: 5,
                               ),
-                              Text('Pregnant :',
+                              Text(getTranslated(context, 'Pregnant') ??'Pregnant',
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.w600)),
                               SizedBox(
                                 height: 5,
                               ),
-                              Text('Age of Pet :',
+                              Text(getTranslated(context, 'Age_of_Pet') ??'Age of Pet',
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.w600)),
                               SizedBox(
                                 height: 5,
                               ),
-                              Text('Temperature :',
+                              Text(getTranslated(context, 'Temperature') ??'Temperature',
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.w600)),
                               SizedBox(
                                 height: 5,
                               ),
-                              Text('Weight of Pet :',
+                              Text(getTranslated(context, 'Weight_of_Pet') ??'Weight of Pet :',
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.w600)),
                               SizedBox(
                                 height: 5,
                               ),
-                              Text('Body Weight Changes :',
+                              Text(getTranslated(context, 'Body_Weight_Changes') ??'Body Weight Changes',
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.w600)),
                               SizedBox(
                                 height: 5,
                               ),
-                              Text('Feed Consumption per Day :',
+                              Text(getTranslated(context, 'Feed_Consumption_per_Day') ??'Feed Consumption per Day :',
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.w600)),
                               SizedBox(
                                 height: 5,
                               ),
-                              Text('Water Consumption per Day :',
+                              Text(getTranslated(context, 'Water_Consumption_per_Day') ??'Water Consumption per Day :',
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.w600)),
                               SizedBox(
                                 height: 5,
                               ),
-                              Text('Average Milk Production :',
+                              Text(getTranslated(context, 'Average_Milk_Production') ??'Average Milk Production :',
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.w600)),
                               SizedBox(
                                 height: 5,
                               ),
-                              Text('Calving History :',
+                              Text(getTranslated(context, 'Calving History') ??'Calving History :',
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.w600)),
                               SizedBox(
                                 height: 5,
                               ),
-                              Text('Vaccination :',
+                              Text(getTranslated(context, 'Vaccination') ??'Vaccination',
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.w600)),
                               SizedBox(
                                 height: 5,
                               ),
-                              Text('Vaccine Name :',
+                              Text(getTranslated(context, 'Vaccine_Name') ??'Vaccine Name',
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.w600)),
                               SizedBox(
                                 height: 5,
                               ),
-                              Text('Medication :',
+                              Text(getTranslated(context, 'Medication') ??'Medication :',
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.w600)),
                               SizedBox(
                                 height: 5,
                               ),
-                              Text('Medicine :',
+                              Text(getTranslated(context, 'Medicine') ??'Medicine',
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.w600)),
                               SizedBox(
                                 height: 5,
                               ),
-                              Text('Surgery :',
+                              Text(getTranslated(context, 'Surgery') ??'Surgery',
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.w600)),
                               SizedBox(
                                 height: 5,
                               ),
-                              Text('Type of Surgery :',
+                              Text(getTranslated(context, 'Type_of_Surgery') ??'Type of Surgery :',
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.w600)),
                               SizedBox(
                                 height: 5,
                               ),
-                              Text('Travelling History :',
+                              Text(getTranslated(context, 'Travelling_History') ??'Travelling History',
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.w600)),
                               SizedBox(
                                 height: 5,
                               ),
-                              Text('Symptoms :',
+                              Text(getTranslated(context, 'Symptoms') ??'Symptoms',
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.w600)),
                               SizedBox(
                                 height: 5,
                               ),
-                              Text('Stool Consistency :',
+                              Text(getTranslated(context, 'Stool_Consistency') ??'Stool Consistency',
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.w600)),
                               SizedBox(
                                 height: 5,
                               ),
-                              Text('Stool Color :',
+                              Text(getTranslated(context, 'Stool_Color') ??'Stool Color',
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.w600)),
                               SizedBox(
                                 height: 5,
                               ),
-                              Text('Urine Frequency :',
+                              Text(getTranslated(context, 'Urine_Frequency') ??'Urine Frequency',
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.w600)),
                               SizedBox(
                                 height: 5,
                               ),
-                              Text('Urine Color :',
+                              Text(getTranslated(context, 'Urine_Color') ??'Urine Color :',
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.w600)),
                               SizedBox(
                                 height: 5,
                               ),
-                              Text('Any Change in Weather :',
+                              Text(getTranslated(context, 'Any_Change_in_Weather') ??'Any Change in Weather',
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.w600)),
                               SizedBox(
                                 height: 5,
                               ),
-                              Text('Weather :',
+                              Text(getTranslated(context, 'Weather') ??'Weather :',
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.w600)),
@@ -879,6 +879,9 @@ class _AnimalDetailScreenState extends State<AnimalDetailScreen> {
                       ),
                     ),
 
+                    Text('Photos'),
+
+
                     usertype == '0'
                         ? widget.isFromApproved ?? false
                         ? SizedBox()
@@ -901,7 +904,7 @@ class _AnimalDetailScreenState extends State<AnimalDetailScreen> {
                                   ),
                             ));
                       },
-                      titleText: 'Diagnosis',
+                      titleText: getTranslated(context, 'Diagnosis') ?? '',
                     )
                         : SizedBox()
                   ],
@@ -911,7 +914,7 @@ class _AnimalDetailScreenState extends State<AnimalDetailScreen> {
             usertype=='0' ? SizedBox():  Align(
               alignment: Alignment.topLeft,
               child: Text(
-                'Prescription:',
+                getTranslated(context, 'Prescription') ??'Prescription:',
                 style: TextStyle(fontWeight: FontWeight.w800),
               ),
             ),
@@ -920,7 +923,7 @@ class _AnimalDetailScreenState extends State<AnimalDetailScreen> {
             usertype=='0' ? SizedBox() : Align(
               alignment: Alignment.topLeft,
               child: Text(
-                'Prescribed Medicine:',
+                getTranslated(context, 'Prescribed_Medicine') ??'Prescribed Medicine:',
                 style: TextStyle(fontWeight: FontWeight.w800),
               ),
             ),

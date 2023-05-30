@@ -3,11 +3,15 @@ import 'dart:convert';
 
 import 'package:eshopmultivendor/Helper/ApiBaseHelper.dart';
 import 'package:eshopmultivendor/Helper/Color.dart';
+import 'package:eshopmultivendor/Helper/Color.dart';
+import 'package:eshopmultivendor/Helper/Color.dart';
 import 'package:eshopmultivendor/Helper/Constant.dart';
+import 'package:eshopmultivendor/Localization/Language_Constant.dart';
 import 'package:eshopmultivendor/Model/DocterRegisterModel/DiagnosedRequestResponse.dart';
 import 'package:eshopmultivendor/Screen/Doctor/AnimalDetailScreen.dart';
 import 'package:eshopmultivendor/Screen/Authentication/Login.dart';
 import 'package:eshopmultivendor/Screen/Doctor/request_for_withdraw.dart';
+import 'package:eshopmultivendor/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -85,15 +89,15 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
             child: SizedBox(width: MediaQuery
                 .of(context)
                 .size
-                .width / 3, child: Center(child: Text('Latest')),),
+                .width / 3, child: Center(child: Text(getTranslated(context, 'Latest') ??'Latest')),),
           ),
           Tab(
               child: SizedBox(width: MediaQuery
                   .of(context)
                   .size
                   .width / 3,
-                child: Center(child: userType == '0' ? Text('Accepted') : Text(
-                    'Approved')),)
+                child: Center(child: userType == '0' ? Text(getTranslated(context, 'ACCEPTED') ??'Accepted') : Text(
+                    getTranslated(context, 'Approved') ??'Approved')),)
           ),
         ],
       ),
@@ -154,7 +158,7 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
 
         controller: tabController,
         children: [
-          userType == '0' ? latestList.isEmpty ? Center(child: Text('Not any request available'),) : SingleChildScrollView(
+          userType == '0' ? latestList.isEmpty ? Center(child: Text(getTranslated(context, "Not_any_request_available") ?? ''),) : SingleChildScrollView(
             padding: const EdgeInsets.all(5.0),
             child: ListView.builder(
               shrinkWrap: true,
@@ -188,7 +192,7 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
                                     .spaceBetween,
                                 children: [
                                   Text(
-                                    "Pet Owner",
+                                    getTranslated(context, "Pet_Owner") ?? '',
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold),
                                   ),
@@ -204,7 +208,7 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
                                     .spaceBetween,
                                 children: [
                                   Text(
-                                    "Email",
+                                    getTranslated(context, "Email") ?? '',
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold),
                                   ),
@@ -220,7 +224,7 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
                                     .spaceBetween,
                                 children: [
                                   Text(
-                                    "Owner Contact:",
+                                    getTranslated(context, "Owner_Contact") ?? '',
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold),
                                   ),
@@ -236,7 +240,7 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
                                     .spaceBetween,
                                 children: [
                                   Text(
-                                    "Breeds ",
+                                    getTranslated(context, "Breeds") ?? '',
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold),
                                   ),
@@ -252,7 +256,7 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
                                     .spaceBetween,
                                 children: [
                                   Text(
-                                    "Disease",
+                                    getTranslated(context, "Disease") ?? '',
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold),
                                   ),
@@ -279,7 +283,7 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
                                             color: Colors.green),
                                         child: Center(
                                           child: Text(
-                                            "Accept",
+                                            getTranslated(context, 'ACCEPT') ?? '',
                                             style: TextStyle(color: white),
                                           ),
                                         )),
@@ -297,7 +301,7 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
                                             color: Colors.red),
                                         child: Center(
                                             child: Text(
-                                              "Reject",
+                                              getTranslated(context, 'REJECT') ?? '',
                                               style: TextStyle(color: white),
                                             ))),
                                   ),
@@ -313,7 +317,7 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
               },
             ),
           ) : seniorDocLatestView(),
-          userType == '0' ? acceptedList.isEmpty ? Center(child: Text('Not any request available'),) : SingleChildScrollView(
+          userType == '0' ? acceptedList.isEmpty ? Center(child: Text(getTranslated(context, "Not_any_request_available") ?? ''),) : SingleChildScrollView(
             padding: const EdgeInsets.all(5.0),
             child: ListView.builder(
               shrinkWrap: true,
@@ -345,7 +349,7 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
                                     .spaceBetween,
                                 children: [
                                   Text(
-                                    "Pet Owner",
+                                    getTranslated(context, "Pet_Owner") ??'',
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold),
                                   ),
@@ -361,7 +365,7 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
                                     .spaceBetween,
                                 children: [
                                   Text(
-                                    "Email",
+                                    getTranslated(context, "Email") ??"Email",
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold),
                                   ),
@@ -377,7 +381,7 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
                                     .spaceBetween,
                                 children: [
                                   Text(
-                                    "Owner Contact:",
+                                    getTranslated(context, "Owner_Contact") ?? '',
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold),
                                   ),
@@ -393,7 +397,7 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
                                     .spaceBetween,
                                 children: [
                                   Text(
-                                    "Breeds ",
+                                    getTranslated(context, "Breeds") ?? '',
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold),
                                   ),
@@ -409,7 +413,7 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
                                     .spaceBetween,
                                 children: [
                                   Text(
-                                    "Disease",
+                                    getTranslated(context, "Disease") ?? '',
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold),
                                   ),
@@ -425,7 +429,7 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
                                     .spaceBetween,
                                 children: [
                                   Text(
-                                    "Status",
+                                    getTranslated(context, "Status") ?? '',
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold),
                                   ),
@@ -502,17 +506,17 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
               Divider(),
               // _getDrawerItem(
               //     2, getTranslated(context, "CUSTOMERS")!, Icons.person),
-              _getDrawerItem(11, "WALLET",
+              _getDrawerItem(11, getTranslated(context, "WALLET") ?? '',
                   Icons.account_balance_wallet_outlined),
               // _getDrawerItem(11, "Daily Collection", Icons.account_balance_wallet_outlined),
-              userType != '0' ? SizedBox() :_getDrawerItem(12, "Diagnosed", Icons.compare_arrows_sharp),
+              userType != '0' ? SizedBox() :_getDrawerItem(12, getTranslated(context, "Diagnosed") ?? '', Icons.compare_arrows_sharp),
               // Divider(),
               // _getDrawerItem(4, getTranslated(context, "PRODUCTS")!,
               //     Icons.production_quantity_limits_outlined),
               // _getDrawerItem(10, "Add Product", Icons.add),
               // Divider(),
-              // _getDrawerItem(5, getTranslated(context, "ChangeLanguage")!,
-              //     Icons.translate),
+              _getDrawerItem(5, getTranslated(context, "ChangeLanguage")!,
+                  Icons.translate),
               _getDrawerItem(6, getTranslated(context, "T_AND_C")!,
                   Icons.speaker_notes_outlined),
               Divider(),
@@ -655,6 +659,7 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
                 curDrwSel = index;
               },
             );
+            openChangeLanguageBottomSheet();
             // languageDialog();
           } else if (title == getTranslated(context, "T_AND_C")!) {
             setState(
@@ -700,7 +705,7 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
           } else if (title == getTranslated(context, "LOGOUT")!) {
             Navigator.pop(context);
             logOutDailog();
-          } else if (title == "Diagnosed") {
+          } else if (title == getTranslated(context, "Diagnosed")) {
             setState(
                   () {
                 curDrwSel = index;
@@ -745,7 +750,158 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
     );
   }
 
+  final GlobalKey<FormState> _changePwdKey = GlobalKey<FormState>();
+
+  Widget bottomsheetLabel(String labelName) => Padding(
+    padding: const EdgeInsets.only(top: 30.0, bottom: 20),
+    child: getHeading(labelName),
+  );
+  Widget getHeading(String title) {
+    return Text(
+      getTranslated(context, title)!,
+      style: Theme.of(context).textTheme.headline6!.copyWith(
+          fontWeight: FontWeight.bold,
+          color: white),
+    );
+  }
 //  => Drawer Header
+  List<String> langCode = ["en","hi","mr" /*"zh", "es",  "ar", "ru", "ja", "de"*/];
+  List<String?> themeList = [];
+  List<String?> languageList = ["English", "Hindi", "Marathi"];
+  int? selectLan ;
+  void openChangeLanguageBottomSheet() {
+    showModalBottomSheet(
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(40.0),
+                topRight: Radius.circular(40.0))),
+        isScrollControlled: true,
+        context: context,
+        builder: (context) {
+          return Wrap(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).viewInsets.bottom),
+                child: Form(
+                  key: _changePwdKey,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      bottomSheetHandle(),
+                      bottomsheetLabel("CHOOSE_LANGUAGE_LBL"),
+                      StatefulBuilder(
+                        builder:
+                            (BuildContext context, StateSetter setModalState) {
+                          return SingleChildScrollView(
+                            child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: getLngList(context, setModalState)),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          );
+        });
+  }
+  List<Widget> getLngList(BuildContext ctx, StateSetter setModalState) {
+    return languageList
+        .asMap()
+        .map(
+          (index, element) => MapEntry(
+          index,
+          InkWell(
+            onTap: () {
+              if (mounted)
+                setState(() {
+                  selectLan = index;
+                  _changeLan(langCode[index], ctx);
+                });
+              setModalState(() {});
+            },
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        height: 25.0,
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: selectLan == index
+                                ? primary2
+                                : white,
+                            border: Border.all(color: primary2)),
+                        child: Padding(
+                          padding: const EdgeInsets.all(2.0),
+                          child: selectLan == index
+                              ? Icon(
+                            Icons.check,
+                            size: 17.0,
+                            color: white,
+                          )
+                              : Icon(
+                            Icons.check_box_outline_blank,
+                            size: 15.0,
+                            color:
+                            white,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                          padding: EdgeInsetsDirectional.only(
+                            start: 15.0,
+                          ),
+                          child: Text(
+                            languageList[index]!,
+                            style: Theme.of(this.context)
+                                .textTheme
+                                .subtitle1!
+                                .copyWith(
+                                color: black),
+                          ))
+                    ],
+                  ),
+                  // index == languageList.length - 1
+                  //     ? Container(
+                  //         margin: EdgeInsetsDirectional.only(
+                  //           bottom: 10,
+                  //         ),
+                  //       )
+                  //     : Divider(
+                  //         color: Theme.of(context).colorScheme.lightBlack,
+                  //       ),
+                ],
+              ),
+            ),
+          )),
+    )
+        .values
+        .toList();
+  }
+  Widget bottomSheetHandle() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 10.0),
+      child: Container(
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20.0),
+            color: black),
+        height: 5,
+        width: MediaQuery.of(context).size.width * 0.3,
+      ),
+    );
+  }
+
+  void _changeLan(String language, BuildContext ctx) async {
+    Locale _locale = await setLocale(language);
+
+    MyApp.setLocale(ctx, _locale);
+  }
 
   _getHeader() {
     return InkWell(
@@ -1115,7 +1271,7 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
   }
 
   Widget seniorDocLatestView() {
-    return  latestDiagnosed.isEmpty ? Center(child: Text('Not any request available'),) : SingleChildScrollView(
+    return  latestDiagnosed.isEmpty ? Center(child: Text(getTranslated(context, "Not_any_request_available") ?? ''),) : SingleChildScrollView(
       padding: const EdgeInsets.all(5.0),
       child: ListView.builder(
         shrinkWrap: true,
@@ -1145,7 +1301,7 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "Doctor Name",
+                              getTranslated(context, "Doctor_Name")??'',
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                             Text(item.doctorName ?? ''),
@@ -1159,7 +1315,7 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "Email",
+                              getTranslated(context, "Email") ?? '',
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                             Text(item.doctorEmail ?? ''),
@@ -1188,7 +1344,7 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "Disease",
+                              getTranslated(context, "Disease") ?? '',
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                             Text(item.disease ?? ''),
@@ -1202,7 +1358,7 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "Status",
+                              getTranslated(context, "Status") ?? '',
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                             Text('Pending'),
@@ -1226,7 +1382,7 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
                                       color: Colors.green),
                                   child: Center(
                                     child: Text(
-                                      "Approved",
+                                      getTranslated(context, "Approved") ?? '',
                                       style: TextStyle(color: white),
                                     ),
                                   )),
@@ -1243,7 +1399,7 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
                                       color: Colors.red),
                                   child: Center(
                                       child: Text(
-                                        "Unapproved",
+                                        getTranslated(context, "Unapproved") ?? '',
                                         style: TextStyle(color: white),
                                       ))),
                             ),
@@ -1262,7 +1418,7 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
   }
 
   Widget seniorDocApprovedView() {
-    return acceptedDiagnosed.isEmpty ? Center(child: Text('Not any request available'),) : SingleChildScrollView(
+    return acceptedDiagnosed.isEmpty ? Center(child: Text(getTranslated(context, "Not_any_request_available") ?? ''),) : SingleChildScrollView(
       padding: const EdgeInsets.all(5.0),
       child: ListView.builder(
         shrinkWrap: true,
@@ -1292,7 +1448,7 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "Doctor Name",
+                              getTranslated(context, "Doctor_Name")??'',
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                             Text(item.doctorName ?? ''),
@@ -1306,27 +1462,27 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "Email",
+                              getTranslated(context, "Email") ?? '',
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                             Text(item.doctorEmail ?? ''),
                           ],
                         ),
                       ),
-                      Padding(
+                      /*Padding(
                         padding: const EdgeInsets.only(
                             top: 10.0, left: 10, right: 10),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "Diagnosis",
+                              getTranslated(context, 'Diagnosis') ?? '',
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                             Text(item.diagnosis ?? ''),
                           ],
                         ),
-                      ),
+                      ),*/
                       /*Padding(
                         padding: const EdgeInsets.only(
                             top: 10.0, left: 10, right: 10),
@@ -1348,7 +1504,7 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "Disease",
+                              getTranslated(context, "Disease") ?? '',
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                             Text(item.disease ?? ''),
@@ -1362,7 +1518,7 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "Status",
+                              getTranslated(context, "Status") ?? '',
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                             Container(
@@ -1421,13 +1577,13 @@ String checkStatue(String status){
     if(status== '0'){
       return 'Pending';
     }else if(status== '1'){
-      return 'Accepted';
+      return getTranslated(context, "Accepted") ??'Accepted';
     }else if(status== '2'){
-      return 'Rejected';
+      return getTranslated(context, "Rejected") ??'Rejected';
     }else if(status== '3'){
-      return 'Diagnosed';
+      return getTranslated(context, "Diagnosed") ??'Diagnosed';
     }else {
-      return 'Approved';
+      return getTranslated(context, "Approved") ?? '';
     }
 }
 
@@ -1456,18 +1612,18 @@ String checkStatue(String status){
               ),
               content: TextFormField(
                 controller: remarkController,
-                decoration: InputDecoration(hintText: 'Add remark'),
+                decoration: InputDecoration(hintText: getTranslated(context, 'Add_remark') ?? 'Add remark'),
               ),
               actions: <Widget>[
                 ElevatedButton(
                     style: ElevatedButton.styleFrom(backgroundColor: primary),
                     onPressed: () {
                       if (remarkController.text.isEmpty) {
-                        setDoctorSnackbar(" please add remark", context);
+                        setDoctorSnackbar("please add remark", context);
                       } else {
                         acceptRejectRequest(id, status);
                       }
-                    }, child: Text('Submit'))
+                    }, child: Text(getTranslated(context, 'Submit') ?? 'Submit'))
               ],
             );
           },

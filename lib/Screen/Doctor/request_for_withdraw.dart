@@ -96,7 +96,7 @@ class _WithdrawRequestScreenState extends State<WithdrawRequestScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: primary,
-        title: Text('Withdraw Request & History', style: TextStyle(color: Colors.white),),
+        title: Text(getTranslated(context, "Withdraw_Request_&_History") ?? '', style: TextStyle(color: Colors.white),),
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
@@ -104,11 +104,11 @@ class _WithdrawRequestScreenState extends State<WithdrawRequestScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
-              'Total Wallet Amount: ${amount}',
+              '${getTranslated(context, "Total_Wallet_Amount")}: ${amount}',
               style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 16.0),
-            AppButton(titleText: "Withdraw request",onTap: (){sendRequest();},),
+            AppButton(titleText: getTranslated(context, "Withdraw_Request"),onTap: (){sendRequest();},),
 
             SizedBox(height: 16.0),
             SizedBox(

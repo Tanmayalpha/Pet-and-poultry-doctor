@@ -1455,8 +1455,7 @@ ScaffoldMessenger.of(context).showSnackBar(
                                 ? Icon(
                                     Icons.check,
                                     size: 17.0,
-                                    color: white,
-                                  )
+                                    color: white,)
                                 : Icon(
                                     Icons.check_box_outline_blank,
                                     size: 15.0,

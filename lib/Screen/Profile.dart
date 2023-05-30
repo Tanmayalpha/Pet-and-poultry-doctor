@@ -1427,7 +1427,7 @@ class StateProfile extends State<Profile> with TickerProviderStateMixin {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Degree',
+                  getTranslated(context, "DEGREE") ?? 'ww',
                   style: Theme.of(this.context).textTheme.caption!.copyWith(
                       color: lightBlack2, fontWeight: FontWeight.normal),
                 ),
@@ -1444,7 +1444,7 @@ class StateProfile extends State<Profile> with TickerProviderStateMixin {
                         overflow: TextOverflow.ellipsis,
                       )
                     : Text(
-                        getTranslated(context, "addDescription")!,
+                        getTranslated(context, "addDescription") ?? 'wwd',
                         style: Theme.of(this.context)
                             .textTheme
                             .subtitle2!
@@ -2568,7 +2568,7 @@ class StateProfile extends State<Profile> with TickerProviderStateMixin {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Registration Card",
+                  getTranslated(context, "REGISTER_C") ?? 'sdd',
                   style: Theme.of(this.context).textTheme.caption!.copyWith(
                       color: lightBlack2, fontWeight: FontWeight.normal),
                 ),
@@ -2874,7 +2874,7 @@ class StateProfile extends State<Profile> with TickerProviderStateMixin {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Signature",
+                  getTranslated(context, "SIGNATURE") ?? 'kjahds',
                   style: Theme.of(this.context).textTheme.caption!.copyWith(
                       color: lightBlack2, fontWeight: FontWeight.normal),
                 ),

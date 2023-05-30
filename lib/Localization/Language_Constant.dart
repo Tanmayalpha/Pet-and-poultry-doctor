@@ -10,6 +10,7 @@ String? languageFlag;
 //languages code
 const String ENGLISH = 'en';
 const String HINDI = 'hi';
+const String MARATHI = 'mr';
 const String CHINESE = 'zh';
 const String SPANISH = 'es';
 const String ARABIC = 'ar';
@@ -38,7 +39,9 @@ Locale _locale(String languageCode) {
       return Locale(ENGLISH, 'US');
     case HINDI:
       return Locale(HINDI, "IN");
-    case CHINESE:
+    case MARATHI:
+      return Locale(MARATHI, "IN");
+    /*case CHINESE:
       return Locale(CHINESE, "CN");
     case SPANISH:
       return Locale(SPANISH, "ES");
@@ -49,7 +52,7 @@ Locale _locale(String languageCode) {
     case JAPANESE:
       return Locale(JAPANESE, "JP");
     case DEUTSCH:
-      return Locale(DEUTSCH, "DE");
+      return Locale(DEUTSCH, "DE");*/
     default:
       return Locale(ENGLISH, 'US');
   }

@@ -1,3 +1,4 @@
+import 'package:eshopmultivendor/Helper/Session.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +18,7 @@ class _ContactState extends State<Contact> {
       appBar: AppBar(
         backgroundColor: primary,
         centerTitle: true,
-        title: Text("Contact Us"),),
+        title: Text(getTranslated(context, "CONTACTUS")!,)),
       body: Container(child: Text("pet&poultrycare@gmail.com"),),
     );
   }

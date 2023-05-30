@@ -73,13 +73,14 @@ class _MyAppState extends State<MyApp> {
       ],
       supportedLocales: [
         Locale("en", "US"),
-        Locale("zh", "CN"),
-        Locale("es", "ES"),
+        /*Locale("zh", "CN"),
+        Locale("es", "ES"),*/
         Locale("hi", "IN"),
-        Locale("ar", "DZ"),
+        Locale("mr", "IN"),
+        /*Locale("ar", "DZ"),
         Locale("ru", "RU"),
         Locale("ja", "JP"),
-        Locale("de", "DE")
+        Locale("de", "DE")*/
       ],
       localeResolutionCallback: (locale, supportedLocales) {
         for (var supportedLocale in supportedLocales) {

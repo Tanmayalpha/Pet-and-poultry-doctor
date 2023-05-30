@@ -77,7 +77,7 @@ class _PrescribeScreenState extends State<PrescribeScreen> {
         backgroundColor: Colors.deepOrange,
         centerTitle: true,
         title: Text(
-          'Prescribed',
+    getTranslated(context, 'Prescribed') ?? 'Prescribed',
           style: TextStyle(color: Colors.white),
         ),
       ),
@@ -106,7 +106,7 @@ class _PrescribeScreenState extends State<PrescribeScreen> {
                           right: 20,
                         ),
                         child: Text(
-                          'Pet & Poultry Care Clinic',
+                          getTranslated(context, 'Pet_&_Poultry_Care_Clinic') ??'Pet & Poultry Care Clinic',
                           style: TextStyle(color: primary2, fontSize: 20),
                         ),
                       ),
@@ -188,7 +188,7 @@ class _PrescribeScreenState extends State<PrescribeScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text('Client Name',
+                             Text(getTranslated(context, 'Client_Name') ?? 'Client Name',
                                 style: TextStyle(
                                     color: primary2,
                                     fontWeight: FontWeight.w400,
@@ -354,7 +354,7 @@ class _PrescribeScreenState extends State<PrescribeScreen> {
                             const SizedBox(
                               height: 5,
                             ),*/
-                            const Text('Date:',
+                             Text(getTranslated(context, 'DATE') ??'Date:',
                                 style: TextStyle(
                                     color: primary2,
                                     fontWeight: FontWeight.w400,
@@ -414,7 +414,7 @@ class _PrescribeScreenState extends State<PrescribeScreen> {
                                       ),
                                       child: Text(
                                         selectedProductData==null?
-                                        'Add Medicine' : 'Add more ',
+                                        getTranslated(context, 'Add_Medicine') ?? 'Add Medicine' : getTranslated(context, 'Add_more') ??'Add more ',
                                         textAlign: TextAlign.center,
                                         style: TextStyle(fontSize: 16),
                                       ),
@@ -432,12 +432,12 @@ class _PrescribeScreenState extends State<PrescribeScreen> {
                               child: TextFormField(
                                 controller: prescriptionController,
                                 maxLines: null,
-                                decoration: const InputDecoration(
+                                decoration:  InputDecoration(
                                     contentPadding: EdgeInsets.only(
                                       left: 20,
                                     ),
                                     border: InputBorder.none,
-                                    hintText: 'Prescription'),
+                                    hintText: getTranslated(context, 'Prescription') ??'Prescription'),
                               ),
                             ),
                             const SizedBox(
@@ -447,7 +447,7 @@ class _PrescribeScreenState extends State<PrescribeScreen> {
                               alignment: Alignment.bottomRight,
                               child: Column(
                                 children: [
-                                  const Text('Signature'),
+                                   Text(getTranslated(context, 'SIGNATURE') ??'Signature'),
                                   const SizedBox(
                                     height: 10,
                                   ),
@@ -484,8 +484,8 @@ class _PrescribeScreenState extends State<PrescribeScreen> {
                                     },
                                     style: ElevatedButton.styleFrom(
                                         backgroundColor: Colors.deepOrange),
-                                    child: const Text(
-                                      'Submit Prescription',
+                                    child:  Text(
+                                      getTranslated(context, 'Submit_Prescription') ??'Submit Prescription',
                                       style: TextStyle(color: Colors.white),
                                     )))
                           ],
@@ -763,6 +763,7 @@ class PrescriptionItem extends StatelessWidget {
                   child: TextFormField(
                     style: TextStyle(color: white),
                       onChanged: onTimeChanged,
+                      cursorColor: white,
                       decoration: InputDecoration(hintText: 'Schedule' )) /*DropdownButtonHideUnderline(
                     child: DropdownButton<String>(
 
