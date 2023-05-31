@@ -49,7 +49,7 @@
   "Submit_Prescription":"प्रिस्क्रिप्शन सबमिट करें",
 
 
-  "REGISTER_C":"RegistraitionCard",
+  "REGISTER_C":"पंजीकरण कार्ड",
   "SEND_VERIFY_CODE_LBL" : "हम इस संख्या में सत्यापन कोड भेज देंगे ",
   "SEND_OTP_TITLE" : "टेप ",
   "MOBILEHINT_LBL" : "मोबाइल नंबर ",
@@ -378,5 +378,7 @@
   "Please enter price details": "कृपया मूल्य विवरण दर्ज करें",
   "Withdraw_Request":"निकासी के लिए अनुरोध",
   "Add_remark":"टिप्पणी जोड़ें",
-  "Submit":"जमा करना"
+  "Submit":"जमा करना",
+  "Consult_Type":"परामर्श प्रकार"
+
 }

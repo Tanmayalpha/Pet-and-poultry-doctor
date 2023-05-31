@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:eshopmultivendor/Helper/ApiBaseHelper.dart';
@@ -669,22 +670,35 @@ class _PrescribeScreenState extends State<PrescribeScreen> {
   }
 
   Future<void> submitPrescription() async {
+    List  premsList = [];
     if (selectedProduct.isEmpty) {
       setDoctorSnackbar('please select medicine', context);
     } else if (prescriptionController.text.isEmpty) {
       setDoctorSnackbar('please add prescription', context);
     } else {
-      List<String> stringList = [];
+      selectedProduct.forEach((element) {
+        int index = selectedProduct.indexWhere((e) => e.id == element.id) ;
+
+        premsList.add(jsonEncode({
+          "product_id": element.id,
+          "schedule" : prescriptions[index].time,
+          "quantity": prescriptions[index].quantity
+        }));
+
+      });
+
+
+     /* List<String> stringList = [];
 
       for (int i = 0; i < selectedProduct.length; i++) {
         stringList.add(selectedProduct[i].id ?? '');
       }
-      String result = stringList.join(",");
+      String result = stringList.join(",");*/
 
       var perameter = {
         Id: widget.id,
         Diagnosis: prescriptionController.text,
-        Medicine: result
+        Medicine: premsList.toString()
       };
 
       apiBaseHelper

@@ -65,80 +65,82 @@ class _AnimalDetailScreenState extends State<AnimalDetailScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    /*Text('Owner Information',
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold)),
-                    SizedBox(height: 8),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 20),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('Username :',
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w600)),
-                              SizedBox(height: 5),
-                              Text('Email :',
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w600)),
-                              SizedBox(height: 5),
-                              Text('Mobile :',
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w600)),
-                              SizedBox(width: 5),
-                            ],
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              widget.animalDetail?.username == null ||
-                                  widget.animalDetail?.username == ""
-                                  ? Text('N/A')
-                                  : Container(
-                                  alignment: Alignment.topRight,
-                                  width: 110,
-                                  child: Text(
-                                    '${widget.animalDetail?.username}',
-                                    overflow: TextOverflow.ellipsis,
-                                  )),
-                              SizedBox(height: 5),
-                              widget.animalDetail?.email == null ||
-                                  widget.animalDetail?.email == ""
-                                  ? Text('N/A')
-                                  : Container(
-                                  alignment: Alignment.topRight,
-                                  width: 115,
-                                  child: Text(
-                                    '${widget.animalDetail?.email}',
-                                    overflow: TextOverflow.ellipsis,
-                                  )),
-                              SizedBox(height: 5),
-                              widget.animalDetail?.mobile == null ||
-                                  widget.animalDetail?.mobile == ""
-                                  ? Text('N/A')
-                                  : Container(
-                                  alignment: Alignment.topRight,
-                                  width: 115,
-                                  child: Text(
-                                      '${widget.animalDetail?.mobile}')),
-                              SizedBox(height: 5),
-                            ],
-                          ),
-                        ],
+                    widget.animalDetail?.consulType== '2' ? Column(children: [
+                      Text('Owner Information',
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold)),
+                      SizedBox(height: 8),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('Username :',
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w600)),
+                                SizedBox(height: 5),
+                                Text('Email :',
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w600)),
+                                SizedBox(height: 5),
+                                Text('Mobile :',
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w600)),
+                                SizedBox(width: 5),
+                              ],
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                widget.animalDetail?.username == null ||
+                                    widget.animalDetail?.username == ""
+                                    ? Text('N/A')
+                                    : Container(
+                                    alignment: Alignment.topRight,
+                                    width: 110,
+                                    child: Text(
+                                      '${widget.animalDetail?.username}',
+                                      overflow: TextOverflow.ellipsis,
+                                    )),
+                                SizedBox(height: 5),
+                                widget.animalDetail?.email == null ||
+                                    widget.animalDetail?.email == ""
+                                    ? Text('N/A')
+                                    : Container(
+                                    alignment: Alignment.topRight,
+                                    width: 115,
+                                    child: Text(
+                                      '${widget.animalDetail?.email}',
+                                      overflow: TextOverflow.ellipsis,
+                                    )),
+                                SizedBox(height: 5),
+                                widget.animalDetail?.mobile == null ||
+                                    widget.animalDetail?.mobile == ""
+                                    ? Text('N/A')
+                                    : Container(
+                                    alignment: Alignment.topRight,
+                                    width: 115,
+                                    child: Text(
+                                        '${widget.animalDetail?.mobile}')),
+                                SizedBox(height: 5),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    // Row(children: [
-                    //   Text('Mobile:'),
-                    //   SizedBox(width: 8),
-                    //   Text('${widget.animalDetail?.mobile}'),
-                    // ],),
-                    SizedBox(height: 16),*/
+                      // Row(children: [
+                      //   Text('Mobile:'),
+                      //   SizedBox(width: 8),
+                      //   Text('${widget.animalDetail?.mobile}'),
+                      // ],),
+                      SizedBox(height: 16),
+                    ],) : SizedBox(),
                     /*Text('Animal Information',
                         style:
                         TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
@@ -879,13 +881,13 @@ class _AnimalDetailScreenState extends State<AnimalDetailScreen> {
                       ),
                     ),
 
-                    Text('Photos'),
+
 
 
                     usertype == '0'
                         ? widget.isFromApproved ?? false
                         ? SizedBox()
-                        : AppButton(
+                        : widget.animalDetail?.consulType== '2' ? SizedBox() :  AppButton(
                       onTap: () {
                         Navigator.push(
                             context,

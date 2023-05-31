@@ -83,8 +83,12 @@ class Latest {
   String? doctorName;
   String? doctorEmail;
   String? doctorPhone;
+  String ? consulType;
+
 
   Latest({
+    this.consulType,
+
     this.username,
     this.email,
     this.mobile,
@@ -119,6 +123,8 @@ class Latest {
 
   factory Latest.fromJson(Map<String, dynamic> json) => Latest(
     username: json["username"],
+    consulType: json["consult_type"],
+
     email: json["email"],
     mobile: json["mobile"],
     id: json["id"],

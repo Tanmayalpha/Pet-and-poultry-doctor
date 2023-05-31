@@ -74,6 +74,7 @@ class _DoctorResignationState extends State<RegistrationScreen> {
 
   int _value = 1;
   int _accountTypeValue = 1;
+  int _consultTypeValue = 1;
 
   bool isLoading = false;
   String  gender =  "Male";
@@ -480,6 +481,94 @@ class _DoctorResignationState extends State<RegistrationScreen> {
                       // select(),
                     ],
                   ) ,
+                  SizedBox(height: 10,),
+                  Padding(
+                      padding: EdgeInsets.all(5.0),
+                      child: Row(
+                        children: [
+                          Text(
+                            "Consult Accept",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            "*",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,fontSize: 10),
+                          ),
+
+                        ],
+                      )
+
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    children: [
+                      Radio(
+                        value: 1,
+                        fillColor: MaterialStateColor.resolveWith(
+                                (states) =>  secondary),
+                        activeColor: secondary,
+                        groupValue: _consultTypeValue,
+                        onChanged: (int? value) {
+                          setState(() {
+                            _consultTypeValue = value!;
+
+                            //isMobile = false;
+                          });
+                        },
+                      ),
+                      SizedBox(height: 10,),
+                      Text(
+                        "Online",
+                        style: TextStyle(
+                            fontSize: 15),
+                      ),
+                      SizedBox(height: 5,),
+                      Radio(
+                          value: 2,
+                          fillColor: MaterialStateColor.resolveWith(
+                                  (states) => secondary),
+                          activeColor:  secondary,
+                          groupValue: _consultTypeValue,
+                          onChanged: (int? value) {
+                            setState(() {
+                              _consultTypeValue = value!;
+                              gender = "Female";
+                              // isMobile = true;
+                            });
+                          }),
+                      // SizedBox(width: 10.0,),
+                      Text(
+                        "Offline",
+                        style: TextStyle(
+                            fontSize: 15),
+                      ),
+                      SizedBox(height: 5,),
+                      Radio(
+                          value: 3,
+                          fillColor: MaterialStateColor.resolveWith(
+                                  (states) => secondary),
+                          activeColor:  secondary,
+                          groupValue: _consultTypeValue,
+                          onChanged: (int? value) {
+                            setState(() {
+                              print("_______${_consultTypeValue}_______");
+                              _consultTypeValue = value!;
+
+                              // isMobile = true;
+                            });
+                          }),
+                      // SizedBox(width: 10.0,),
+                      Text(
+                        "Both",
+                        style: TextStyle(
+                            fontSize: 15),
+                      ),
+                    ],
+                  ),
                   SizedBox(
                     height: 5,
                   ),
@@ -1244,7 +1333,8 @@ class _DoctorResignationState extends State<RegistrationScreen> {
         'upi_id': '',
         'fcm_id': fcmToken ?? '',
         'latitude': lat ?? '',
-        'longitude': long ?? ''
+        'longitude': long ?? '',
+        'visit_type':_consultTypeValue.toString()
       });
       request.files.add(await http.MultipartFile.fromPath(
           'registeration_card_file', registrationCard?.path ?? ''));
@@ -1264,6 +1354,9 @@ class _DoctorResignationState extends State<RegistrationScreen> {
 
       http.StreamedResponse response = await request.send();
 
+      request.files.forEach((element) {print("_______${element.filename}_______"); });
+      print("_______${request.fields}_______");
+
       if (response.statusCode == 200) {
         var result = await response.stream.bytesToString();
         var finalResult = jsonDecode(result);
@@ -1276,6 +1369,7 @@ class _DoctorResignationState extends State<RegistrationScreen> {
 
         }else{
           setDoctorSnackbar(finalResult['message'], context);
+          print("_______${finalResult['message']}_______");
         }
       } else {
         print(response.reasonPhrase);

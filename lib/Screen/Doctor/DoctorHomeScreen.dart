@@ -192,11 +192,11 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
                                     .spaceBetween,
                                 children: [
                                   Text(
-                                    getTranslated(context, "Pet_Owner") ?? '',
+                                    getTranslated(context, "Name_of_Pet") ?? '',
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold),
                                   ),
-                                  Text(item.username ?? ''),
+                                  Text(item.json?.nameOfPet ?? ''),
                                 ],
                               ),
                             ),
@@ -208,11 +208,11 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
                                     .spaceBetween,
                                 children: [
                                   Text(
-                                    getTranslated(context, "Email") ?? '',
+                                    getTranslated(context, 'Weight_of_Pet') ?? '',
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold),
                                   ),
-                                  Text(item.email ?? ''),
+                                  Text(item.json?.weightOfPet ?? ''),
                                 ],
                               ),
                             ),
@@ -224,11 +224,11 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
                                     .spaceBetween,
                                 children: [
                                   Text(
-                                    getTranslated(context, "Owner_Contact") ?? '',
+                                    getTranslated(context, "Age_of_Pet") ?? '',
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold),
                                   ),
-                                  Text(item.mobile ?? ''),
+                                  Text(item.json?.ageOfPet ?? ''),
                                 ],
                               ),
                             ),
@@ -261,6 +261,28 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
                                         fontWeight: FontWeight.bold),
                                   ),
                                   Text(item.disease ?? ''),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 10.0, left: 10, right: 10, bottom: 10),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment
+                                    .spaceBetween,
+                                children: [
+                                  Text(
+                                    getTranslated(context, "Consult_Type") ?? '',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.all(8),
+
+                                    decoration: BoxDecoration(
+                                        color: primary,
+                                        borderRadius: BorderRadius.circular(10)),
+                                    child: Text(checkConsultType(item.consulType ?? '',), style: TextStyle(color: white),),),
                                 ],
                               ),
                             ),
@@ -349,11 +371,11 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
                                     .spaceBetween,
                                 children: [
                                   Text(
-                                    getTranslated(context, "Pet_Owner") ??'',
+                                    getTranslated(context, "Name_of_Pet") ??'',
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold),
                                   ),
-                                  Text(item.username ?? ''),
+                                  Text(item.json?.nameOfPet ?? ''),
                                 ],
                               ),
                             ),
@@ -365,11 +387,11 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
                                     .spaceBetween,
                                 children: [
                                   Text(
-                                    getTranslated(context, "Email") ??"Email",
+                                    getTranslated(context, 'Weight_of_Pet') ??"Email",
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold),
                                   ),
-                                  Text(item.email ?? ''),
+                                  Text(item.json?.weightOfPet ?? ''),
                                 ],
                               ),
                             ),
@@ -381,11 +403,11 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
                                     .spaceBetween,
                                 children: [
                                   Text(
-                                    getTranslated(context, "Owner_Contact") ?? '',
+                                    getTranslated(context, "Age_of_Pet") ?? '',
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold),
                                   ),
-                                  Text(item.mobile ?? ''),
+                                  Text(item.json?.ageOfPet ?? ''),
                                 ],
                               ),
                             ),
@@ -440,6 +462,28 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
                                         color: primary,
                                         borderRadius: BorderRadius.circular(10)),
                                     child: Text(checkStatue(item.status ?? '',), style: TextStyle(color: white),),),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 10.0, left: 10, right: 10, bottom: 10),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment
+                                    .spaceBetween,
+                                children: [
+                                  Text(
+                                    getTranslated(context, "Consult_Type") ?? '',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.all(8),
+
+                                    decoration: BoxDecoration(
+                                        color: primary,
+                                        borderRadius: BorderRadius.circular(10)),
+                                    child: Text(checkConsultType(item.consulType ?? '',), style: TextStyle(color: white),),),
                                 ],
                               ),
                             ),
@@ -1195,6 +1239,7 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen>
           print("_______${getPatientRequests}_______");
           bool error = getData["error"];
           String? msg = getData["message"];
+          print("_______${getData}_______");
 
           if (!error) {
             acceptedList = PatientRequstResonse
@@ -1577,15 +1622,23 @@ String checkStatue(String status){
     if(status== '0'){
       return 'Pending';
     }else if(status== '1'){
-      return getTranslated(context, "Accepted") ??'Accepted';
+      return getTranslated(context, "ACCEPTED") ??'Accepted';
     }else if(status== '2'){
-      return getTranslated(context, "Rejected") ??'Rejected';
+      return getTranslated(context, "REJECTED") ??'Rejected';
     }else if(status== '3'){
       return getTranslated(context, "Diagnosed") ??'Diagnosed';
     }else {
       return getTranslated(context, "Approved") ?? '';
     }
 }
+
+  String checkConsultType(String status){
+    if(status== '1'){
+      return 'Online';
+    }else {
+      return 'Offline';
+    }
+  }
 
 
   bool loading = true;

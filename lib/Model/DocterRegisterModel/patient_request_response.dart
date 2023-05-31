@@ -78,8 +78,10 @@ class Accepted {
   DateTime? updatedAt;
   String? fuid;
   String? fcmID;
+  String ? consulType;
 
   Accepted({
+    this.consulType,
     this.username,
     this.email,
     this.mobile,
@@ -109,6 +111,7 @@ class Accepted {
 
   factory Accepted.fromJson(Map<String, dynamic> json) => Accepted(
     username: json["username"],
+    consulType: json["consult_type"],
     email: json["email"],
     mobile: json["mobile"],
     id: json["id"],
